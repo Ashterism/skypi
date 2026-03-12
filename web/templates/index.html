@@ -1,0 +1,114 @@
+<!doctype html>
+
+<link rel="stylesheet" href="/static/main.css">
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SkyPi Tonight</title>
+</head>
+<body>
+    <main class="dashboard">
+        <section class="hero">
+            <div class="hero-card">
+                <h1 class="hero-status factor-{{ go_no_go['rag']|lower }}">
+                    {% if go_no_go['rag']|lower == 'g' %}
+                        GO!
+                    {% else %}
+                        <div class="status-main">NO-GO</div>
+                        <div class="status-next">Next good day: {{ go_no_go['next_good'] }}</div>
+                    {% endif %}
+                </h1>
+            </div>
+            <div class="next-good">
+                <table class="next-days">
+                    <tbody>
+                        <tr>
+                            <td><span class="day-colour good"></span></td>
+                            <td class="day-date">Fri 13 Mar</td>
+                            <td class="day-moon">🌙 ↓</td>
+                            <td class="day-cloud">☁ 45%</td>
+                            <td class="day-vis">🔭 72km</td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-colour ok"></span></td>
+                            <td class="day-date">Sat 14 Mar</td>
+                            <td class="day-moon">🌙 ↓</td>
+                            <td class="day-cloud">☁ 45%</td>
+                            <td class="day-vis">🔭 1km</td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-colour bad"></span></td>
+                            <td class="day-date">Sun 19 Mar</td>
+                            <td class="day-moon">🌙 ↑</td>
+                            <td class="day-cloud">☁ 45%</td>
+                            <td class="day-vis">🔭 13km</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside class="summary">
+            <h2>Tonight at a glance</h2>
+            <div class="factor-list">
+                <div class="factor-row">
+                    <span class="factor-label">Moon</span>
+                    <span class="factor-value">{{ at_a_glance['moon_range'] }}</span>
+                </div>
+                <div class="factor-row">
+                    <span class="factor-label">Wind</span>
+                    <span class="factor-value">{{ at_a_glance['wind_range'] }}</span>
+                </div>
+                <div class="factor-row">
+                    <span class="factor-label">Cloud</span>
+                    <span class="factor-value">{{ at_a_glance['cloud_range'] }}</span>
+                </div>
+                <div class="factor-row">
+                    <span class="factor-label">Visibility</span>
+                    <span class="factor-value">{{ at_a_glance['visibility_range'] }}</span>
+                </div>
+                <div class="factor-row">
+                    <span class="factor-label">Temp</span>
+                    <span class="factor-value">{{ at_a_glance['temp_range'] }}</span>
+                </div>
+                <div class="factor-row">
+                    <span class="factor-label">Rain</span>
+                    <span class="factor-value">{{ at_a_glance['rain_range'] }}</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <section class="detail-panel">
+        <h2>Hourly breakdown</h2>
+        <table class="hourly-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Overall</th>
+                    <th>Cloud</th>
+                    <th>Dew</th>
+                    <th>Wind</th>
+                    <th>Moon</th>
+                    <th>Visibility</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in hours %}
+                <tr>
+                    <td>{{ h.time }}</td>
+                    <td><span class="factor-rag factor-{{ h.overall_rating|lower }}">{{ h.overall_rating }}</span></td>
+                    <td><span class="factor-rag factor-{{ h.cloud_rating|lower }}">{{ h.cloud_rating }}</span></td>
+                    <td><span class="factor-rag factor-{{ h.dew_rating|lower }}">{{ h.dew_rating }}</span></td>
+                    <td><span class="factor-rag factor-{{ h.wind_rating|lower }}">{{ h.wind_rating }}</span></td>
+                    <td><span class="factor-rag factor-{{ h.moon_rating|lower }}">{{ h.moon_rating }}</span></td>
+                    <td><span class="factor-rag factor-{{ h.visibility_rating|lower }}">{{ h.visibility_rating }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

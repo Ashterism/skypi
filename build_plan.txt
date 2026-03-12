@@ -1,0 +1,153 @@
+SkyPi/
+├── README.md
+├── requirements.txt
+├── run.py                 # tiny entrypoint (starts Flask)
+│
+├── skypi/                 # all Python logic lives here
+│   ├── __init__.py
+│   ├── config.py
+│   ├── models.py
+│   ├── evaluator.py
+│   ├── services/
+│   │   └── nightly_report.py
+│   ├── providers/
+│   │   ├── weather.py
+│   │   └── moon.py
+│   └── utils/
+│       └── time.py
+│
+├── web/                   # presentation layer only
+│   ├── templates/
+│   │   ├── index.html
+│   │   └── details.html
+│   └── static/
+│       └── style.css
+│
+├── data/                  # cache + local state
+│   └── cache/
+│       └── latest.json
+│
+├── setup/                 # kiosk/systemd scripts later
+│   ├── skypi.service
+│   └── kiosk.sh
+│
+└── tests/                 # optional
+
+
+requirements.txt
+
+Python dependencies (Flask, requests, astronomy lib, etc).
+Used to recreate the environment on the Pi.
+
+run.py
+
+Starts Flask and wires everything together.
+Imports get_nightly_report() and passes the result to templates.
+Contains no business logic.
+
+⸻
+
+skypi/ (the engine)
+
+__init__.py
+
+Marks this as a Python package.
+Usually empty.
+
+config.py
+
+Holds lat/lon, timezone, window (19–01), thresholds.
+Central place for tunable values.
+
+models.py
+
+Defines dataclasses like:
+	•	HourlyConditions
+	•	NightReport
+This is your internal data contract.
+
+evaluator.py
+
+Pure logic.
+Takes weather + moon data and returns GOOD / OK / BAD + reasons.
+
+⸻
+
+services/nightly_report.py
+
+Orchestrator.
+Builds the time window → fetches weather + moon → runs evaluator → returns NightReport.
+This is the single “engine entrypoint”.
+
+⸻
+
+providers/weather.py
+
+Calls Open-Meteo.
+Maps raw JSON → list of HourlyConditions.
+
+providers/moon.py
+
+Computes moon altitude + illumination per hour.
+Returns moon data in your internal format.
+
+⸻
+
+utils/time.py
+
+Handles timezone + window building (19:00–01:00 logic).
+Keeps messy datetime logic out of your core code.
+
+⸻
+
+web/ (the skin)
+
+templates/index.html
+
+Main screen (big GOOD / OK / BAD).
+Renders a NightReport.
+
+templates/details.html
+
+Hourly breakdown and reasons.
+Pure presentation.
+
+static/style.css
+
+Styling for 480×320 layout.
+No logic.
+
+⸻
+
+data/cache/latest.json
+
+Stores last API result + timestamp.
+Prevents repeated API calls and survives reboot.
+
+⸻
+
+setup/
+
+skypi.service
+
+Systemd service to auto-start SkyPi on boot.
+
+kiosk.sh
+
+Script to launch Chromium in kiosk mode pointing to localhost.
+
+⸻
+
+tests/
+
+Optional.
+Unit tests for evaluator, time logic, etc.
+
+⸻
+
+The mental model (important)
+	•	skypi/ = brain
+	•	web/ = face
+	•	run.py = glue
+	•	data/ = memory
+	•	setup/ = deployment

@@ -1,0 +1,259 @@
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    background: #0b0f1a;
+    color: #e6eaf2;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 20px;
+    padding: 20px;
+    align-items: start;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    width: 100%;
+}
+
+.hero-card {
+    width: 100%;
+    display: flex;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9aa4b2;
+}
+
+.hero-status {
+    margin: 0;
+    width: 100%;
+    min-height: 120px;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    font-size: 72px;
+    line-height: 0.95;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 16px;
+    border: 2px solid #28314d;
+}
+
+.status-main {
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.status-next {
+    font-size: 16px;
+    margin-top: 6px;
+    color: #b8c0cc;
+}
+
+.hero-status.factor-g {
+    font-size: 88px;
+    color: #2ecc71;
+}
+
+.hero-status.factor-r {
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-status.factor-g,
+.hero-status.factor-a,
+.hero-status.factor-r {
+    color: #f7f9fc;
+}
+
+.hero-status.factor-r {
+    justify-content: flex-start;
+}
+
+.hero-status.factor-g {
+    font-size: 88px;
+}
+
+.next-good {
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    background: #1a2136;
+    border: 1px solid #28314d;
+    border-radius: 12px;
+}
+
+.next-days {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.next-days td {
+    padding: 6px 4px;
+    font-size: 14px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.next-days td:first-child {
+    width: 18px;
+    padding-left: 0;
+}
+
+.day-date {
+    width: 34%;
+    font-weight: 600;
+}
+
+.day-moon,
+.day-cloud,
+.day-vis {
+    width: 22%;
+    color: #c6cfdb;
+    text-align: left;
+}
+
+.day-colour {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.day-colour.good {
+    background: #2ecc71;
+}
+
+.day-colour.ok {
+    background: #f39c12;
+}
+
+.day-colour.bad {
+    background: #e74c3c;
+}
+
+.next-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9aa4b2;
+}
+
+.next-value {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #e6eaf2;
+}
+
+.hero-subtitle {
+    margin: 12px 0 0;
+    font-size: 16px;
+    color: #b8c0cc;
+}
+
+.summary {
+    width: 100%;
+    background: #141a2b;
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.summary h2,
+.detail-panel h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 20px;
+}
+
+.factor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.factor-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.factor-label,
+.factor-value {
+    font-size: 16px;
+}
+
+.factor-rag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.factor-g {
+    background: #2ecc71;
+    color: #06210f;
+}
+
+.factor-a {
+    background: #f39c12;
+    color: #2b1600;
+}
+
+.factor-r {
+    background: #e74c3c;
+    color: #2b0606;
+}
+
+.detail-panel {
+    padding: 0 20px 20px;
+}
+
+.hourly-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #141a2b;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hourly-table th,
+.hourly-table td {
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.hourly-table thead {
+    background: #1a2136;
+}
+
+.hourly-table tbody tr:nth-child(even) {
+    background: #121729;
+}
+
+.hourly-table tbody tr:nth-child(odd) {
+    background: #141a2b;
+}
