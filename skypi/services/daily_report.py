@@ -1,3 +1,5 @@
+from datetime import date
+
 from ..providers.weather_openmeteo import get_hourly_forecast
 from ..providers.moon_astral import get_hourlymoon
 
@@ -72,6 +74,8 @@ def tonight_at_a_glance(hourlyweather, hourlymoon):
 
 def get_daily_report():
     # get forecast data
+    today = date.today().isoformat()
+
     hourlyweather = get_hourly_forecast()
     hourlymoon = get_hourlymoon()
 

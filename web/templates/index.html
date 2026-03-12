@@ -17,10 +17,11 @@
                         GO!
                     {% else %}
                         <div class="status-main">NO-GO</div>
-                        <div class="status-next">Next good day: {{ go_no_go['next_good'] }}</div>
+                        <!-- <div class="status-next">Next good day: {{ go_no_go['next_good'] }}</div> -->
                     {% endif %}
                 </h1>
             </div>
+            <!--
             <div class="next-good">
                 <table class="next-days">
                     <tbody>
@@ -48,6 +49,7 @@
                     </tbody>
                 </table>
             </div>
+            -->
         </section>
 
         <aside class="summary">
@@ -98,7 +100,7 @@
             <tbody>
                 {% for h in hours %}
                 <tr>
-                    <td>{{ h.time }}</td>
+                    <td>{{ h.time | replace('T', ' - ') }}</td>
                     <td><span class="factor-rag factor-{{ h.overall_rating|lower }}">{{ h.overall_rating }}</span></td>
                     <td><span class="factor-rag factor-{{ h.cloud_rating|lower }}">{{ h.cloud_rating }}</span></td>
                     <td><span class="factor-rag factor-{{ h.dew_rating|lower }}">{{ h.dew_rating }}</span></td>
