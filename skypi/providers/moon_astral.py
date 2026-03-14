@@ -4,82 +4,80 @@ from zoneinfo import ZoneInfo
 import datetime
 
 from ..models import HourlyMoon
-
-
-# create custom location
-city = LocationInfo(
-    "Abu Dhabi",
-    "UAE",
-    "Asia/Dubai",
-    23.55053952123817,
-    54.74569584563267
-)
+from ..config import LATITUDE, LONGITUDE, TIMEZONE
 
 DEBUG = True
 
 """
 https://sffjunkie.github.io/astral/
 
+python -m skypi.providers.moon_astral      
+
+date = date
+dt = datetime
+
 """
 
-#city = LocationInfo
-observer = city.observer
-
-# date for rise/set
-date = datetime.date.today()
-
-# datetime for position
-dt = datetime.datetime(
-    date.year,
-    date.month,
-    date.day,
-    19, 0, 0,
-    tzinfo=ZoneInfo("Asia/Dubai")
+# create ASTRAL custom location
+city = LocationInfo(
+    "Abu Dhabi",
+    "UAE",
+    TIMEZONE,
+    LATITUDE,
+    LONGITUDE
 )
 
-def moon_rise_and_set():
-    m_rise = moonrise(observer, date, tzinfo="Asia/Dubai")
-    m_set = moonset(observer, date, tzinfo="Asia/Dubai")
-    return(m_rise, m_set)
+#ASTRAL city = LocationInfo
+observer = city.observer
 
-def moon_phase():
-    return phase(date)
+# helper functions getting specific information
+def moon_rise_and_set(target_date):
+    m_rise = moonrise(observer, target_date, tzinfo=ZoneInfo(TIMEZONE))
+    m_set = moonset(observer, target_date, tzinfo=ZoneInfo(TIMEZONE))
+    return m_rise, m_set
 
-def moon_location(dpt=dt):
-    az = azimuth(observer, at=dpt)
-    el = elevation(observer, at=dpt)
-    ze = zenith(observer, at=dpt)
-    return(az,el,ze)
+def moon_phase(start_date):
+    return phase(start_date)
 
-def get_moon_meta():
-    mrise, mset = moon_rise_and_set()
-    moon_phase_value = moon_phase()
-    return (mrise, mset, moon_phase_value)
+def moon_location(hour_dt_utc):
+    az = azimuth(observer, at=hour_dt_utc)
+    el = elevation(observer, at=hour_dt_utc)
+    ze = zenith(observer, at=hour_dt_utc)
+    return az, el, ze
 
-def get_hourlymoon():
+def get_moon_meta(target_date):
+    mrise, mset = moon_rise_and_set(target_date)
+    moon_phase_value = moon_phase(target_date)
+    return mrise, mset, moon_phase_value
+
+
+# function to return data to use in main programme
+def get_hourlymoon(start_dt, end_dt):
+   
     hours = []
+    current_dt = start_dt
+    ph = moon_phase(start_dt.date())
 
-    for i in range(7):
-        hour_dt = dt + datetime.timedelta(hours=i)
-        hour_dt_utc = hour_dt.astimezone(datetime.timezone.utc) #fix for astral/UTC issue
-        _, el,_ = moon_location(hour_dt_utc)   
-        ph = moon_phase()
-        
-        hours.append(HourlyMoon(time=hour_dt.isoformat(), phase=ph, el=el))
+    while current_dt <= end_dt:
+        hour_dt_utc = current_dt.astimezone(datetime.timezone.utc)  # fix for astral/UTC issue
+        _, el, _ = moon_location(hour_dt_utc)
+
+        hours.append(HourlyMoon(time=current_dt.strftime('%Y-%m-%dT%H:%M'), phase=ph, el=el))
+        current_dt += datetime.timedelta(hours=1)
 
     return hours
 
 
 
 if __name__ == "__main__":
-    m_rise, m_set = moon_rise_and_set()
-    az,el,ze = moon_location()
-    if DEBUG:
-        print("Moonrise:", m_rise)
-        print("Moonset:", m_set)
 
-    hours = get_hourlymoon()
+    start_dt = datetime.datetime.now(ZoneInfo(TIMEZONE)).replace(minute=0, second=0, microsecond=0)
+    end_dt = start_dt + datetime.timedelta(hours=6)
+    hours = get_hourlymoon(start_dt, end_dt)
     print(hours)
+
+
+
 
 
 """

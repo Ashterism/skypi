@@ -1,3 +1,83 @@
+## V1
+- [x] Go/No-Go indicator
+- [x] Tonight at a glance (ranges for tonight)
+- [x] Hourly breakdown (good/bad hours by RAG)
+
+## V1.1 – Provider / orchestrator refactor
+- [x] Move latitude / longitude / timezone to `config.py`
+- [x] Convert moon provider to read location + timezone from config
+- [x] Convert weather provider to read location from config
+- [x] Make providers accept **datetime range (start_dt, end_dt)** instead of calculating their own dates
+- [x] Remove provider assumptions about "today" or "tonight"
+- [x] Ensure providers return **continuous hourly ranges**
+- [x] Create `forecaster` service to define the datetime window
+- [x] Confirm moon + weather providers return aligned hourly timestamps
+- [x] Tag release `v1.1`
+
+## V1.2 – Unified hourly model
+- [ ] Create unified hourly dataclass (values + ratings)
+- [ ] Merge weather + moon data into unified hourly objects
+- [ ] Refactor evaluator to write ratings onto the hourly objects
+- [ ] Ensure timestamps remain aligned across providers
+- [ ] Update report builder to use unified hourly objects
+- [ ] Tag release `v1.2`
+
+## V1.3 – Hourly values + richer hourly UI
+- [ ] Update hourly breakdown to show **value + RAG**
+- [ ] Decide display format for hourly values
+- [ ] Improve hourly table layout
+- [ ] Improve readability for the small screen
+- [ ] Format time display (Mon 12 Mar – 19:00)
+- [ ] Tag release `v1.3`
+
+## V2 – Multi-day forecast
+- [ ] Fetch multi-day hourly forecast (~14 days)
+- [ ] Generate moon data for the same timestamp range
+- [ ] Merge weather + moon into a single dataset
+- [ ] Add forecast caching (~15 minute refresh)
+- [ ] Store raw forecast in cache file
+- [ ] Add helper to group hours by date
+- [ ] Add helper to build night window (19:00–01:00)
+- [ ] Build nightly summary objects
+- [ ] Implement lookahead for **next three nights**
+- [ ] Replace hard-coded preview rows with real data
+- [ ] Tag release `v2`
+
+## V2.1 – Next good night
+- [ ] Scan upcoming nights within a fortnight
+- [ ] Define rule for what counts as a "good" night
+- [ ] Return first qualifying night
+- [ ] Handle "no good night found" case
+- [ ] Display next good night in UI
+- [ ] Tag release `v2.1`
+
+## Refactor / architecture
+- [ ] Ensure providers only fetch/map raw data
+- [ ] Keep evaluator pure logic
+- [ ] Keep nightly_report as orchestrator
+- [ ] Move datetime helpers to `utils/time.py`
+- [ ] Add NightSummary dataclass
+
+## Data / caching
+- [ ] Create forecast cache file
+- [ ] Store timestamp of last API fetch
+- [ ] Reuse cached forecast if recent
+- [ ] Add optional debug CSV export
+
+## UI polish
+- [ ] Improve hourly table readability
+- [ ] Finalise GO / NO-GO hero layout
+- [ ] Finalise 3-night preview styling
+- [ ] Verify layout on target screen resolution
+
+
+----
+Not planned yet
+
+move check_data (forecaster) to /tests
+
+
+
 SkyPi/
 ├── README.md
 ├── requirements.txt

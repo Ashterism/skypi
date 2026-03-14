@@ -2,6 +2,7 @@ import requests
 
 from ..models import HourlyWeather
 from ..utils.time_util import get_today, get_tomorrow
+from ..config import LATITUDE, LONGITUDE, TIMEZONE, START_TIME, END_TIME
 
 """
 python -m skypi.providers.weather_openmeteo
@@ -13,27 +14,21 @@ hourly = "cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,visibilit
 temperature_unit = "celsius"
 wind_speed_unit = "kmh"
 
-latitude = 23.55053952123817
-longitude = 54.74569584563267
-timezone = "Asia%2FDubai"
-start_time = "19:00"
-end_time = "01:00"
 
+def get_hourly_forecast(start_dt, end_dt) -> list[HourlyWeather]:
 
-def get_hourly_forecast() -> list[HourlyWeather]:
-
-    # reminder this is here to ensure computed each time, not only first time
-    start_hour = f"{get_today()}T{start_time}"
-    end_hour = f"{get_tomorrow()}T{end_time}"
+    # convert time to string format used by open meteo
+    start_hour = start_dt.strftime('%Y-%m-%dT%H:%M')
+    end_hour = end_dt.strftime('%Y-%m-%dT%H:%M')
 
     api_url = (
         f"{base_url}?"
-        f"latitude={latitude}&"
-        f"longitude={longitude}&"
+        f"latitude={LATITUDE}&"
+        f"longitude={LONGITUDE}&"
         f"hourly={hourly}&"
         f"temperature_unit={temperature_unit}&"
         f"wind_speed_unit={wind_speed_unit}&"
-        f"timezone={timezone}&"
+        f"timezone={TIMEZONE}&"
         f"start_hour={start_hour}&"
         f"end_hour={end_hour}"
     )
@@ -70,7 +65,4 @@ def get_hourly_forecast() -> list[HourlyWeather]:
 if __name__ == "__main__":
 
     # test print
-    hours = get_hourly_forecast()
-    print(f"Fetched {len(hours)} hours")
-    print(hours[0])
-    print("\n")
+    ...

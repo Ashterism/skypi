@@ -6,6 +6,8 @@ from ..providers.moon_astral import get_hourlymoon
 from ..evaluator import get_evaluations
 from ..utils.moon import get_moon_position, get_moon_phase
 
+from ..config import START_TIME, END_TIME
+
 
 # add milkyway position
 # potentially later DSO/Constellation location
