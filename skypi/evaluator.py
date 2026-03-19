@@ -1,4 +1,4 @@
-from .models import HourlyRating, HourlyMoon
+from .models import HourlyForecast
 
 """
 python -m skypi.evaluator
@@ -73,19 +73,23 @@ def overall_hour_rating(cloud, dew, wind, visibility, moon):
     return "G"
 
 
-def evaluate_hours(hourlyweather, hourlymoon):
+def evaluate_hours(forecast_hours):
 
     hours = []
 
-    for i in range(len(hourlyweather)):
+    for hour in forecast_hours:
+        cloud_rating = eval_cloud_pct(hour.cloud_pct)
+        dew_rating = eval_dew(hour.temp_c, hour.dew_point_c)
+        wind_rating = eval_wind(hour.wind_kmh, hour.gust_kmh)
+        visibility_rating = eval_visibility(hour.visibility_m)
+        moon_rating = eval_moonlight(hour.moon_phase, hour.moon_elevation)
 
-        cloud_rating = eval_cloud_pct(hourlyweather[i].cloud_pct)
-        dew_rating = eval_dew(hourlyweather[i].temp_c, hourlyweather[i].dew_point_c)
-        wind_rating = eval_wind(hourlyweather[i].wind_kmh, hourlyweather[i].gust_kmh)
-        visibility_rating = eval_visibility(hourlyweather[i].visibility_m)
-        moon_rating = eval_moonlight(hourlymoon[i].phase, hourlymoon[i].el)
-
-        overall_rating = overall_hour_rating(
+        hour.cloud_rating = cloud_rating
+        hour.dew_rating = dew_rating
+        hour.wind_rating = wind_rating
+        hour.visibility_rating = visibility_rating
+        hour.moon_rating = moon_rating
+        hour.overall_rating = overall_hour_rating(
             cloud_rating,
             dew_rating,
             wind_rating,
@@ -93,19 +97,7 @@ def evaluate_hours(hourlyweather, hourlymoon):
             moon_rating,
         )
 
-        hour = HourlyRating(
-            time=hourlyweather[i].time,
-            cloud_rating=cloud_rating,
-            dew_rating=dew_rating,
-            wind_rating=wind_rating,
-            visibility_rating=visibility_rating,
-            moon_rating=moon_rating,
-            overall_rating=overall_rating,
-        )
-
-        hours.append(hour)
-
-    return hours
+    return forecast_hours
 
 
 def evaluate_day(hours):
@@ -125,14 +117,15 @@ def evaluate_day(hours):
     return gng
     
 
-def get_evaluations(hourlyweather, hourlymoon):
-    hours = evaluate_hours(hourlyweather, hourlymoon)
+def get_evaluations(hourly_forecast):
+    hours = evaluate_hours(hourly_forecast)
     go_no_go = evaluate_day(hours)
     return go_no_go, hours
 
 
 if __name__ == "__main__":
     ...
+    
     # hours = evaluate_hours()
     # for h in hours:
     #     print(

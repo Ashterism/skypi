@@ -15,12 +15,12 @@
 - [x] Tag release `v1.1`
 
 ## V1.2 – Unified hourly model
-- [ ] Create unified hourly dataclass (values + ratings)
-- [ ] Merge weather + moon data into unified hourly objects
-- [ ] Refactor evaluator to write ratings onto the hourly objects
-- [ ] Ensure timestamps remain aligned across providers
-- [ ] Update report builder to use unified hourly objects
-- [ ] Tag release `v1.2`
+- [x] Create unified hourly dataclass (values + ratings)
+- [x] Merge weather + moon data into unified hourly objects
+- [x] Refactor evaluator to write ratings onto the hourly objects
+- [x] Ensure timestamps remain aligned across providers
+- [x] Update report builder to use unified hourly objects
+- [x] Tag release `v1.2`
 
 ## V1.3 – Hourly values + richer hourly UI
 - [ ] Update hourly breakdown to show **value + RAG**
@@ -35,7 +35,7 @@
 - [ ] Generate moon data for the same timestamp range
 - [ ] Merge weather + moon into a single dataset
 - [ ] Add forecast caching (~15 minute refresh)
-- [ ] Store raw forecast in cache file
+- [ ] Store merged hourly forecast data in cache file (JSON)
 - [ ] Add helper to group hours by date
 - [ ] Add helper to build night window (19:00–01:00)
 - [ ] Build nightly summary objects

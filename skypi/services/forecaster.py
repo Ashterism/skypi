@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 from ..providers.weather_openmeteo import get_hourly_forecast
 from ..providers.moon_astral import get_hourlymoon
 
+from ..models import HourlyForecast
 from ..config import DAYS, START_TIME, END_TIME, TIMEZONE
 
 
@@ -38,37 +39,16 @@ def create_datetime(days):
 
     return start_dt, end_dt
 
-
+# test function to ensure data from both providers aligns (time stamps)
 def check_data(all_w_hours, all_m_hours):
     # check length
-    len_w = len(all_w_hours)
-    len_m = len(all_m_hours)
-    if len_w == len_m:
-        len_check = "Length matches"
-    else:
-        len_check = f"Length mismatch by: {(len_w - len_m)}"
+    assert len(all_w_hours) == len(all_m_hours), "Length mismatch"
 
-    # check first & last hour match (for UTC/local errors etc)
-    first_w_hour = all_w_hours[0].time
-    first_m_hour = all_m_hours[0].time
-    last_w_hour = all_w_hours[-1].time
-    last_m_hour = all_m_hours[-1].time
-
-    if first_w_hour == first_m_hour:
-        first_hour = "hr1 matches"
-    else:
-        first_hour = f"hr1 clash {first_w_hour} vs {first_m_hour}"
-
-    if last_w_hour == last_m_hour:
-        last_hour = "hr-1 matches"
-    else:
-        last_hour = f"hr-1 clash {last_w_hour} vs {last_m_hour}"
+    for i in range(len(all_w_hours)):
+        assert all_w_hours[i].time == all_m_hours[i].time, f"Mismatch at index {i}"
 
 
-    return(f"{len_check}, {first_hour}, {last_hour}")
-
-
-
+# main / runner script
 def get_forecast_data(days: int = DAYS):
 
     start_dt, end_dt = create_datetime(days)
@@ -76,26 +56,32 @@ def get_forecast_data(days: int = DAYS):
     all_w_hours = get_hourly_forecast(start_dt, end_dt)
     all_m_hours = get_hourlymoon(start_dt, end_dt)
 
-    # error_check = check_data(all_w_hours, all_m_hours)
-    # print(error_check)
-    
-   # print(f"Hours: {all_w_hours}\n")
-   # print(f"Hours: {all_m_hours}\n")
+    check_data(all_w_hours, all_m_hours)
 
-    # print(f"{start_dt} - {end_dt}")
-    # test = start_dt.strftime('%Y-%m-%dT%H:%M')
+    forecast_hours = []
+    for i in range(len(all_w_hours)):
+        hour = HourlyForecast(
+            # weather data
+            time=all_w_hours[i].time,
+            cloud_pct=all_w_hours[i].cloud_pct,
+            temp_c=all_w_hours[i].temp_c,
+            dew_point_c=all_w_hours[i].dew_point_c,
+            wind_kmh=all_w_hours[i].wind_kmh,
+            gust_kmh=all_w_hours[i].gust_kmh,
+            visibility_m=all_w_hours[i].visibility_m,
+            rain_pct=all_w_hours[i].rain_pct,
+            # moon data
+            moon_phase=all_m_hours[i].phase,
+            moon_elevation=all_m_hours[i].el
+        )
 
-  
-    
+        # add each hourly forecast object to a list of hour objects
+        forecast_hours.append(hour)
 
-""""""
-    # fetch data for today + days(-1)
+    return forecast_hours
 
-    # combine into one object of 
-    # cache object
-
-    # extra def (maybe in another file?) - class to make cached data accessible to rest of programme
 
 
 if __name__ == "__main__":
-    get_forecast_data()
+    test = get_forecast_data()
+    print(test)

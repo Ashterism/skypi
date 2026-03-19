@@ -1,8 +1,7 @@
 import requests
 
 from ..models import HourlyWeather
-from ..utils.time_util import get_today, get_tomorrow
-from ..config import LATITUDE, LONGITUDE, TIMEZONE, START_TIME, END_TIME
+from ..config import LATITUDE, LONGITUDE, TIMEZONE
 
 """
 python -m skypi.providers.weather_openmeteo

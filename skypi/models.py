@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 @dataclass
 class HourlyWeather:
-    """One hour of weather conditions"""
+    """One hour of weather conditions from provider"""
 
     time: str
     cloud_pct: float
@@ -19,12 +19,37 @@ class HourlyWeather:
 
 @dataclass
 class HourlyMoon:
-    """One hour of moon conditions"""
+    """One hour of moon conditions from provider"""
     time: str
     phase: float
     el: float
-    
 
+
+@dataclass
+class HourlyForecast:
+    """One hour of combined forecast data"""
+    #weather
+    time: str
+    cloud_pct: float
+    temp_c: float
+    dew_point_c: float
+    wind_kmh: float
+    gust_kmh: float
+    visibility_m: float
+    rain_pct: float
+    #moon
+    moon_phase: float
+    moon_elevation: float
+    #ratings
+    cloud_rating: str | None = None
+    dew_rating: str | None = None
+    wind_rating: str | None = None
+    visibility_rating: str | None = None
+    moon_rating: str | None = None
+    overall_rating: str | None = None
+
+
+#REMOVE AFTER REFACTOR OF EVALUATOR (or keep and refactor hourlyforecast to nestle)
 @dataclass
 class HourlyRating:
     time: str
@@ -34,8 +59,6 @@ class HourlyRating:
     visibility_rating: str
     moon_rating: str
     overall_rating: str
-
-
 
 
 
