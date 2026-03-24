@@ -37,24 +37,33 @@
 - [x] Make evaluator return rated hourly data compatible with astro sessions
 - [x] Tag release `v1.2.2`
 
-## V1.3 – Hourly values + richer hourly UI
-- [ ] Update hourly breakdown to show **value + RAG**
+## V1.3 – Three-night preview
+- [ ] Add lookahead for next three astro sessions
+- [ ] Prepare next 3 night summary data in `daily_report.py`
+- [ ] Replace hard-coded preview rows with real session data
+- [ ] Decide which summary fields to show in the preview
+- [ ] Verify ordering is tonight + next 3 nights / or next 3 after tonight
+- [ ] Tag release `v1.3`
+
+## V1.4 – Hourly values + richer hourly UI
+- [ ] Update hourly breakdown to show value + RAG
 - [ ] Decide display format for hourly values
 - [ ] Improve hourly table layout
 - [ ] Improve readability for the small screen
-- [ ] Format time display (Mon 12 Mar – 19:00)
-- [ ] Tag release `v1.3`
+- [ ] Format time display
+- [ ] Tag release `v1.4`
 
 ## V2 – Multi-day forecast
-- [ ] Fetch multi-day hourly forecast (~14 days)
-- [ ] Generate moon data for the same timestamp range
-- [ ] Merge weather + moon into a single dataset
+- [x] Fetch multi-day hourly forecast (~14 days) (structurally supported via forecaster)
+- [x] Generate moon data for the same timestamp range
+- [x] Merge weather + moon into a single dataset
+- [x] Add helper to group hours by astro session
+- [x] Add helper to build night window (19:00–01:00)
+- [x] Build nightly summary objects (AstroSession)
+- [ ] Change forecast horizon from 3 days to 14 days (config update)
 - [ ] Add forecast caching (~15 minute refresh)
 - [ ] Store merged hourly forecast data in cache file (JSON)
-- [ ] Add helper to group hours by date
-- [ ] Add helper to build night window (19:00–01:00)
-- [ ] Build nightly summary objects
-- [ ] Implement lookahead for **next three nights**
+- [ ] Implement lookahead for next three nights (handled in V1.3 UI layer)
 - [ ] Replace hard-coded preview rows with real data
 - [ ] Tag release `v2`
 
