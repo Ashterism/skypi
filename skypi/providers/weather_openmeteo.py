@@ -1,4 +1,6 @@
 import requests
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from ..models import HourlyWeather
 from ..config import LATITUDE, LONGITUDE, TIMEZONE
@@ -44,7 +46,7 @@ def get_hourly_forecast(start_dt, end_dt) -> list[HourlyWeather]:
 
     for i in range(len(hourly_block["time"])):
         hour = HourlyWeather(
-            time=hourly_block["time"][i],
+            time=datetime.fromisoformat(hourly_block["time"][i]).replace(tzinfo=ZoneInfo(TIMEZONE)),
             cloud_pct=hourly_block["cloud_cover"][i],
             temp_c=hourly_block["temperature_2m"][i],
             dew_point_c=hourly_block["dew_point_2m"][i],

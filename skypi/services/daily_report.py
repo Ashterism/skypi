@@ -1,32 +1,16 @@
 from datetime import date
 
-from .forecaster import get_forecast_data
+from .forecaster import get_forecast
+from .astro_sessions import get_astro_sessions
 
 from ..evaluator import get_evaluations
 from ..utils.moon import get_moon_position, get_moon_phase
 
 from ..config import START_TIME, END_TIME
 
-""""""
-# REMOVE IN REFACTOR
-from ..providers.weather_openmeteo import get_hourly_forecast
-from ..providers.moon_astral import get_hourlymoon
-""""""
-
 
 # add milkyway position
 # potentially later DSO/Constellation location
-
-
-# def moon_position(altitude):
-#     if altitude > 0:
-#         moon_display = f" ↑ {altitude:.0f}°"
-#     else:
-#         moon_display = f" ↓ {abs(altitude):.0f}°"
-#         if abs(altitude) >= 18:
-#             moon_display += " ✨"
-
-#     return(moon_display)
 
 
 def tonight_at_a_glance(hourly_forecast):
@@ -57,7 +41,6 @@ def tonight_at_a_glance(hourly_forecast):
         rain_range = f"{min(all_rain)} - {max(all_rain)}%"
 
 
-
     moon_phase = get_moon_phase(hourly_forecast[0].moon_phase)
     moon_start_alt = hourly_forecast[0].moon_elevation
     moon_end_alt = hourly_forecast[-1].moon_elevation
@@ -82,14 +65,22 @@ def get_daily_report():
     # get forecast data
     today = date.today().isoformat()
 
-    hourly_forecast = get_forecast_data()
+    hourly_forecast = get_forecast()
 
     # turn data into information
-    go_no_go, hours = get_evaluations(hourly_forecast)
+    # 
+    """go_no_go - needs adding back in """
+    hourly_breakdown = get_evaluations(hourly_forecast)
     at_a_glance = tonight_at_a_glance(hourly_forecast)
 
     return {
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
-        "hours": hours
+        "hourly_breakdown": hourly_breakdown
     }
+
+
+if __name__ == "__main__":
+    """python -m skypi.services.daily_report"""
+    report = get_daily_report()
+    print(report)

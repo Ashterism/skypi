@@ -98,7 +98,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for h in hours %}
+                {% for h in hourly_breakdown %}
                 <tr>
                     <td>{{ h.time | replace('T', ' - ') }}</td>
                     <td><span class="factor-rag factor-{{ h.overall_rating|lower }}">{{ h.overall_rating }}</span></td>

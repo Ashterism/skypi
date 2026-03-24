@@ -1,4 +1,7 @@
 from __future__ import annotations
+from typing import List
+
+from datetime import date, datetime
 
 from dataclasses import dataclass
 
@@ -7,7 +10,7 @@ from dataclasses import dataclass
 class HourlyWeather:
     """One hour of weather conditions from provider"""
 
-    time: str
+    time: datetime
     cloud_pct: float
     temp_c: float
     dew_point_c: float
@@ -20,7 +23,7 @@ class HourlyWeather:
 @dataclass
 class HourlyMoon:
     """One hour of moon conditions from provider"""
-    time: str
+    time: datetime
     phase: float
     el: float
 
@@ -28,8 +31,10 @@ class HourlyMoon:
 @dataclass
 class HourlyForecast:
     """One hour of combined forecast data"""
+    #meta
+    astro_date: date
     #weather
-    time: str
+    time: datetime
     cloud_pct: float
     temp_c: float
     dew_point_c: float
@@ -47,6 +52,14 @@ class HourlyForecast:
     visibility_rating: str | None = None
     moon_rating: str | None = None
     overall_rating: str | None = None
+
+
+@dataclass
+class AstroSession:
+    #meta
+    astro_date: date
+    astro_hours: List[HourlyForecast] | None = None
+    astro_rating: str | None = None
 
 
 #REMOVE AFTER REFACTOR OF EVALUATOR (or keep and refactor hourlyforecast to nestle)

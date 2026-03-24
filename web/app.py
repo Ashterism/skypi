@@ -13,9 +13,9 @@ def tonight():
 
     return render_template(
         "index.html", 
-        hours = report["hours"],
         go_no_go = report["go_no_go"],
-        at_a_glance = report["at_a_glance"]
+        at_a_glance = report["at_a_glance"],
+        hourly_breakdown = report["hourly_breakdown"]
     )
 
 if __name__ == "__main__":

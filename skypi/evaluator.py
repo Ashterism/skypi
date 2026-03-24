@@ -1,14 +1,11 @@
-from .models import HourlyForecast
-
 """
 python -m skypi.evaluator
 
-Does various evaluations on aspects of weather.  
-Rates by hour, and by aspect
-Also rates overall for the "day"
+This file evaluates each forecast hour and writes ratings onto the
+HourlyForecast objects.
 
-Data required for surfacing return via get_evaluations() wrapper def
-
+It does not evaluate full astro sessions / nights.
+That grouping and session-level GO / NO-GO logic belongs elsewhere.
 """
 
 
@@ -75,8 +72,6 @@ def overall_hour_rating(cloud, dew, wind, visibility, moon):
 
 def evaluate_hours(forecast_hours):
 
-    hours = []
-
     for hour in forecast_hours:
         cloud_rating = eval_cloud_pct(hour.cloud_pct)
         dew_rating = eval_dew(hour.temp_c, hour.dew_point_c)
@@ -99,48 +94,38 @@ def evaluate_hours(forecast_hours):
 
     return forecast_hours
 
-
-def evaluate_day(hours):
-    good_hours = 0
-
-    for i in range(len(hours)):
-        if hours[i].overall_rating == "G":
-            good_hours += 1
-        
-    if good_hours >= 4:
-        gng = {"rag": "G", "result": "GO"}
-    elif good_hours >= 2:
-        gng = {"rag": "A", "result": "NO-GO"}
-    else:
-        gng = {"rag": "R", "result": "NO-GO"}
-    
-    return gng
     
 
 def get_evaluations(hourly_forecast):
     hours = evaluate_hours(hourly_forecast)
-    go_no_go = evaluate_day(hours)
-    return go_no_go, hours
+    return hours
+
 
 
 if __name__ == "__main__":
-    ...
-    
-    # hours = evaluate_hours()
-    # for h in hours:
-    #     print(
-    #         f"{h.time} - Overall: {h.overall_rating} | Cloud: {h.cloud_rating}, Dew: {h.dew_rating}, "
-    #         f"Wind: {h.wind_rating}, Moon: {h.moon_rating}, Visibility: {h.visibility_rating}"
-    #     )
-    # print(f"Overall tonight: {evaluate_day(hours)}")
+    from .services.forecaster import get_forecast
 
+    hourly_forecast = get_forecast()
 
+    for hour in hourly_forecast:
+        print(
+            f"{hour.time} | "
+            f"astro_date={hour.astro_date} | "
+            f"overall={hour.overall_rating} | "
+            f"cloud={hour.cloud_rating} | "
+            f"dew={hour.dew_rating} | "
+            f"wind={hour.wind_rating} | "
+            f"visibility={hour.visibility_rating} | "
+            f"moon={hour.moon_rating}"
+        )
 
+        
 
 """
 	•	Overall: GREEN / AMBER / RED
 	•	Best window: 21:00-23:00
 	•	1-line reasons (max 2-3), e.g.:
+
 	•	“Cloud max 0%”
 	•	“Wind max 9 km/h”
 	•	“Dew spread min 8.8°C”
