@@ -33,9 +33,9 @@
 ## V1.2.2 – Session summary layer
 - [x] Group rated hours by `astro_date`
 - [x] Build nightly/session summary structure from grouped hours
-- [ ] Update daily_report to use one astro session for "Tonight at a glance"
-- [ ] Update get_evaluations() to support multi-session output
-- [ ] Tag release `v1.2.2`
+- [x] Update daily_report to use one astro session for "Tonight at a glance"
+- [x] Make evaluator return rated hourly data compatible with astro sessions
+- [x] Tag release `v1.2.2`
 
 ## V1.3 – Hourly values + richer hourly UI
 - [ ] Update hourly breakdown to show **value + RAG**

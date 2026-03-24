@@ -62,16 +62,20 @@ def tonight_at_a_glance(hourly_forecast):
 
 
 def get_daily_report():
-    # get forecast data
-    today = date.today().isoformat()
+    # get forecast data grouped by astro session
+    astro_forecast_data = get_astro_sessions()
+    
+    # extract day 0 (todays) overall rating
+    go_no_go = astro_forecast_data[0].astro_rating
 
-    hourly_forecast = get_forecast()
+    # use day 0 data to return todays "at a glance"
+    at_a_glance = tonight_at_a_glance(astro_forecast_data[0].astro_hours)
 
-    # turn data into information
-    # 
-    """go_no_go - needs adding back in """
-    hourly_breakdown = get_evaluations(hourly_forecast)
-    at_a_glance = tonight_at_a_glance(hourly_forecast)
+    # unpack astro_sessions and extract all hourly forecasts
+    hourly_breakdown = []
+    for session in astro_forecast_data:
+        hourly_breakdown.extend(session.astro_hours)
+
 
     return {
         "go_no_go": go_no_go, 
