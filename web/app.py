@@ -15,7 +15,9 @@ def tonight():
         "index.html", 
         go_no_go = report["go_no_go"],
         at_a_glance = report["at_a_glance"],
-        hourly_breakdown = report["hourly_breakdown"]
+        hourly_breakdown = report["hourly_breakdown"],
+        next_three_days = report["next_three_days"]
+
     )
 
 if __name__ == "__main__":

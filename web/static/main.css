@@ -105,20 +105,19 @@ body {
 }
 
 .next-days td {
-    padding: 6px 4px;
+    padding: 6px 3px;
     font-size: 14px;
     vertical-align: middle;
     white-space: nowrap;
 }
 
 .next-days td:first-child {
-    width: 18px;
+    width: 14px;
     padding-left: 0;
 }
 
 .day-date {
     width: 34%;
-    font-weight: 600;
 }
 
 .day-moon,
@@ -131,9 +130,9 @@ body {
 
 .day-colour {
     display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
 }
 
 .day-colour.good {

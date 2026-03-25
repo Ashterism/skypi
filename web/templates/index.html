@@ -21,35 +21,32 @@
                     {% endif %}
                 </h1>
             </div>
-            <!--
+            
             <div class="next-good">
                 <table class="next-days">
                     <tbody>
+                        {% for d in next_three_days %}
                         <tr>
-                            <td><span class="day-colour good"></span></td>
-                            <td class="day-date">Fri 13 Mar</td>
-                            <td class="day-moon">🌙 ↓</td>
-                            <td class="day-cloud">☁ 45%</td>
-                            <td class="day-vis">🔭 72km</td>
+                            <td>
+                                <span class="day-colour factor-{{ d.rating['rag']|lower }}"></span>
+                            </td>
+                            <td class="day-date">{{ d.date }}</td>
+                            <td class="day-moon">{{ d.moon }}</td>
+                            <td class="day-cloud">-</td>
+                            <td class="day-vis">
+                                🔭 
+                                {% if d.rating['window'] != 'na' %}
+                                    {{ d.rating['window'][0].strftime('%H:%M') }} - {{ d.rating['window'][-1].strftime('%H:%M') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                         </tr>
-                        <tr>
-                            <td><span class="day-colour ok"></span></td>
-                            <td class="day-date">Sat 14 Mar</td>
-                            <td class="day-moon">🌙 ↓</td>
-                            <td class="day-cloud">☁ 45%</td>
-                            <td class="day-vis">🔭 1km</td>
-                        </tr>
-                        <tr>
-                            <td><span class="day-colour bad"></span></td>
-                            <td class="day-date">Sun 19 Mar</td>
-                            <td class="day-moon">🌙 ↑</td>
-                            <td class="day-cloud">☁ 45%</td>
-                            <td class="day-vis">🔭 13km</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
-            -->
+            
         </section>
 
         <aside class="summary">

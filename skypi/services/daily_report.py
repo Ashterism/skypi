@@ -61,6 +61,30 @@ def tonight_at_a_glance(hourly_forecast):
     }
 
 
+def next_three_days(astro_forecast_data):
+
+    # make dict of required values
+    next_three_days_data = []
+    for session in astro_forecast_data:
+        first_hour = session.astro_hours[0]
+
+        moon_phase = get_moon_phase(first_hour.moon_phase)
+        moon_position = get_moon_position(first_hour.moon_elevation)
+
+        day = {
+            "date" : session.astro_date.strftime("%a %d %b"),
+            "rating" : session.astro_rating,
+            "moon" : (f"{moon_phase} {moon_position}"),
+         #   "cloud" : session.astro_hours_hour.cloud_pct,
+         #   "visibility" : session.astro_hours_visibility_m
+        }
+        next_three_days_data.append(day)
+
+
+    return next_three_days_data
+   
+
+
 def get_daily_report():
     # get forecast data grouped by astro session
     astro_forecast_data = get_astro_sessions()
@@ -71,6 +95,9 @@ def get_daily_report():
     # use day 0 data to return todays "at a glance"
     at_a_glance = tonight_at_a_glance(astro_forecast_data[0].astro_hours)
 
+    # get next three (astro) days forecast
+    next_iii_days = next_three_days(astro_forecast_data[1:4])
+
     # unpack astro_sessions and extract all hourly forecasts
     hourly_breakdown = []
     for session in astro_forecast_data:
@@ -80,7 +107,8 @@ def get_daily_report():
     return {
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
-        "hourly_breakdown": hourly_breakdown
+        "hourly_breakdown": hourly_breakdown,
+        "next_three_days" : next_iii_days
     }
 
 
