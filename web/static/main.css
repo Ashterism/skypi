@@ -108,7 +108,7 @@ body {
     padding: 6px 3px;
     font-size: 14px;
     vertical-align: middle;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 .next-days td:first-child {
@@ -117,15 +117,16 @@ body {
 }
 
 .day-date {
-    width: 34%;
+    width: 30%;
+    text-align: left;
 }
 
 .day-moon,
 .day-cloud,
 .day-vis {
-    width: 22%;
+    width: 23.3%;
     color: #c6cfdb;
-    text-align: left;
+    text-align: center;
 }
 
 .day-colour {

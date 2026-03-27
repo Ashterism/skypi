@@ -38,12 +38,12 @@
 - [x] Tag release `v1.2.2`
 
 ## V1.3 – Three-night preview
-- [ ] Add lookahead for next three astro sessions
-- [ ] Prepare next 3 night summary data in `daily_report.py`
-- [ ] Replace hard-coded preview rows with real session data
-- [ ] Decide which summary fields to show in the preview
-- [ ] Verify ordering is tonight + next 3 nights / or next 3 after tonight
-- [ ] Tag release `v1.3`
+- [x] Add lookahead for next three astro sessions
+- [x] Prepare next 3 night summary data in `daily_report.py`
+- [x] Replace hard-coded preview rows with real session data
+- [x] Decide which summary fields to show in the preview
+- [x] Verify ordering is tonight + next 3 nights / or next 3 after tonight
+- [x] Tag release `v1.3`
 
 ## V1.4 – Hourly values + richer hourly UI
 - [ ] Update hourly breakdown to show value + RAG

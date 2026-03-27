@@ -7,31 +7,41 @@ from ..models import AstroSession
 from .forecaster import get_forecast
 
 
-def astro_session_rating(astro_date_hours):
+def best_astro_window(astro_date_hours):
     consec_hours_g = 0
-    consec_g_dts = []
+    consec_g_hourlyforecast = []
     max_consec_g = 0
-    max_consec_g_dts = []
-   
+    max_consec_g_hourlyforecast = []
 
     for hour in astro_date_hours:
         if hour.overall_rating == "G":
             consec_hours_g += 1
-            consec_g_dts.append(hour.time)
+            consec_g_hourlyforecast.append(hour)
             max_consec_g = max(max_consec_g, consec_hours_g)
             if max_consec_g == consec_hours_g:
-                max_consec_g_dts = consec_g_dts
+                max_consec_g_hourlyforecast = consec_g_hourlyforecast
 
         else:
             consec_hours_g = 0
-            consec_g_dts = []        
+            consec_g_hourlyforecast = []  
+
+    best_astro_window = {
+        "best_window_hours" : max_consec_g_hourlyforecast,  # actual hours
+        "best_window_length" : max_consec_g                 # count of max
+    }
+
+    return best_astro_window
+
+
+def astro_session_rating(best_astro_window):
+    best_window_length = best_astro_window["best_window_length"]
     
-    if max_consec_g >= 3:
-        gng = {"rag": "G", "result": "GO", "window": max_consec_g_dts}
-    elif max_consec_g == 2:
-        gng = {"rag": "A", "result": "MAYBE", "window": max_consec_g_dts}
+    if best_window_length >= 3:
+        gng = {"rag": "G", "result": "GO"}
+    elif best_window_length == 2:
+        gng = {"rag": "A", "result": "MAYBE"}
     else:
-        gng = {"rag": "R", "result": "NO-GO", "window": "na"}
+        gng = {"rag": "R", "result": "NO-GO"}
     
     return gng
 
@@ -49,18 +59,21 @@ def create_astro_sessions():
         else:
             astro_date_list.append(hour.astro_date)
 
-    
     astro_session_data = []
-    for date in astro_date_list:
+    for date in astro_date_list:                # for each "astro" day
+
         astro_date_hours = []
-        for hour in forecast_hours:
-            if hour.astro_date == date:
-                astro_date_hours.append(hour)
+        for hour in forecast_hours:             # run through all the hourlyforecasts
+            if hour.astro_date == date:         # if the "astrodate" matches....
+                astro_date_hours.append(hour)   # add to a list
+
+        best_window_data = best_astro_window(astro_date_hours) # best window in list
 
         astro_day = AstroSession(
                 astro_date=date,
                 astro_hours=astro_date_hours,
-                astro_rating=astro_session_rating(astro_date_hours)
+                astro_rating=astro_session_rating(best_window_data),
+                astro_rating_window=best_window_data
             )         
         
         astro_session_data.append(astro_day)

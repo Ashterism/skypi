@@ -32,14 +32,8 @@
                             </td>
                             <td class="day-date">{{ d.date }}</td>
                             <td class="day-moon">{{ d.moon }}</td>
-                            <td class="day-cloud">-</td>
-                            <td class="day-vis">
-                                🔭 
-                                {% if d.rating['window'] != 'na' %}
-                                    {{ d.rating['window'][0].strftime('%H:%M') }} - {{ d.rating['window'][-1].strftime('%H:%M') }}
-                                {% else %}
-                                    -
-                                {% endif %}
+                            <td class="day-cloud">☁ {{ d.cloud }}</td>
+                            <td class="day-vis">🔭 {{ d.visibility }}</td>
                             </td>
                         </tr>
                         {% endfor %}

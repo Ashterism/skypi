@@ -60,6 +60,32 @@ def tonight_at_a_glance(hourly_forecast):
         "moon_range": moon_range,
     }
 
+def calc_best_window_avgs(best_hours,rating):
+    cloud_vals = []
+    visibility_vals = []
+
+    if rating["rag"] == "R":
+        best_avgs = {
+            "avg_cloud" : "-",
+            "avg_visibility" : "-",
+        }
+    
+    else:
+        for hour in best_hours:
+            cloud_vals.append(hour.cloud_pct)
+            visibility_vals.append(hour.visibility_m)
+
+        cloud_avg = sum(cloud_vals)/len(cloud_vals)
+        visibility_avg = sum(visibility_vals)/len(visibility_vals)
+
+        best_avgs = {
+            "avg_cloud" : cloud_avg,
+            "avg_visibility" : visibility_avg,
+        }
+
+    return best_avgs
+
+
 
 def next_three_days(astro_forecast_data):
 
@@ -71,12 +97,15 @@ def next_three_days(astro_forecast_data):
         moon_phase = get_moon_phase(first_hour.moon_phase)
         moon_position = get_moon_position(first_hour.moon_elevation)
 
+        rating = session.astro_rating
+        best_hours = session.astro_rating_window["best_window_hours"]
+
         day = {
             "date" : session.astro_date.strftime("%a %d %b"),
-            "rating" : session.astro_rating,
+            "rating" : rating,
             "moon" : (f"{moon_phase} {moon_position}"),
-         #   "cloud" : session.astro_hours_hour.cloud_pct,
-         #   "visibility" : session.astro_hours_visibility_m
+            "cloud" : calc_best_window_avgs(best_hours, rating)["avg_cloud"],
+            "visibility" : calc_best_window_avgs(best_hours, rating)["avg_visibility"]
         }
         next_three_days_data.append(day)
 
@@ -113,6 +142,8 @@ def get_daily_report():
 
 
 if __name__ == "__main__":
-    """python -m skypi.services.daily_report"""
+    """
+    python -m skypi.services.daily_report
+    """
     report = get_daily_report()
     print(report)
