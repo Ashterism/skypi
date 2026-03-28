@@ -15,9 +15,9 @@ def tonight():
         "index.html", 
         go_no_go = report["go_no_go"],
         at_a_glance = report["at_a_glance"],
+        next_three_days = report["next_three_days"],
         hourly_breakdown = report["hourly_breakdown"],
-        next_three_days = report["next_three_days"]
-
+        astro_session_data = report["astro_session_data"],
     )
 
 if __name__ == "__main__":

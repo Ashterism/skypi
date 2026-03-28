@@ -5,6 +5,11 @@ body {
     color: #e6eaf2;
 }
 
+.page-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .dashboard {
     display: grid;
     grid-template-columns: 2fr 3fr;
@@ -256,4 +261,332 @@ body {
 
 .hourly-table tbody tr:nth-child(odd) {
     background: #141a2b;
+}
+
+.daily-forecast-panel {
+    padding: 0 20px 20px;
+}
+
+.daily-forecast-panel h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 20px;
+}
+
+.daily-forecast-panel .hourly-table {
+    table-layout: fixed;
+}
+
+.daily-forecast-panel .hourly-table th,
+.daily-forecast-panel .hourly-table td {
+    padding: 12px 8px;
+}
+
+.daily-forecast-panel .hourly-table th:first-child,
+.daily-forecast-panel .hourly-table td:first-child {
+    width: 170px;
+    text-align: left;
+}
+
+.daily-forecast-panel .hourly-table th:nth-child(2),
+.daily-forecast-panel .hourly-table td:nth-child(2) {
+    width: 90px;
+}
+
+.session-date {
+    font-weight: 600;
+    color: #e6eaf2;
+}
+.session-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.session-card {
+    background: #141a2b;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.session-main {
+    display: grid;
+    grid-template-columns: 182px 75px 1fr;
+    align-items: stretch;
+    min-height: 70px;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.session-main:focus-visible {
+    outline: 2px solid #9aa4b2;
+    outline-offset: -2px;
+}
+
+.session-date-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    color: #f7f9fc;
+}
+
+.session-date-block.factor-g {
+    background: #6dbb4a;
+}
+
+.session-date-block.factor-a {
+    background: #a28d2a;
+}
+
+.session-date-block.factor-r {
+    background: #a23b3b;
+}
+
+.session-date-day {
+    font-size: 48px;
+    line-height: 0.9;
+    font-weight: 400;
+}
+
+.session-date-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 18px;
+    line-height: 1.05;
+    max-width: 140px;
+}
+
+.session-date-month {
+    font-weight: 700;
+}
+
+.date-short {
+    display: none;
+}
+
+.session-moon-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #18203a;
+    padding: 0 6px;
+}
+
+.session-moon-icon {
+    font-size: 42px;
+    line-height: 1;
+}
+
+.session-hours {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+    padding: 10px 14px;
+    background: #141a2b;
+}
+
+.session-hour {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.session-hour-time {
+    font-size: 12px;
+    font-weight: 700;
+    color: #f7f9fc;
+}
+
+.session-hour-pill {
+    min-width: 44px;
+    padding: 3px 8px;
+    font-size: 12px;
+}
+
+.session-hour-sub {
+    font-size: 12px;
+    color: #f7f9fc;
+}
+
+.session-detail {
+    background: #101624;
+    border-top: 1px solid #28314d;
+    padding: 10px 0 12px;
+}
+
+.session-card.is-collapsed .session-detail {
+    display: none;
+}
+
+.session-detail-row {
+    display: grid;
+    grid-template-columns: 182px 75px 1fr;
+    align-items: center;
+}
+
+.session-detail-label {
+    grid-column: 1 / span 2;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c6cfdb;
+    padding: 6px 12px 6px 16px;
+    text-align: right;
+}
+
+.session-hours-detail {
+    background: transparent;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.session-detail-value {
+    font-size: 12px;
+    text-align: center;
+    color: #d3d9e3;
+}
+
+@media (max-width: 600px) {
+    .dashboard {
+        gap: 15px;
+        padding: 15px;
+    }
+    .status-main {
+        font-size: 36px;
+        font-weight: 450;
+        line-height: 0.95;
+    }
+    .summary {
+        padding: 12px;
+    }
+    .factor-value {
+        font-size: 15px;
+    }
+
+    .session-date-block {
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .session-date-day {
+        font-size: 42px;
+    }
+
+    .session-date-text {
+        font-size: 15px;
+        line-height: 1;
+    }
+
+    .session-main {
+        grid-template-columns: 98px 48px 1fr;
+    }
+
+    .session-hour-pill {
+        min-width: 30px;
+        padding: 3px 4px;
+        -webkit-text-stroke: 0.01px rgba(255,255,255,0.9);
+        text-shadow: 0 0 1px rgba(255,255,255,0.8);
+    }
+
+    .daily-forecast-panel {
+        padding: 0 12px 12px;
+    }
+
+    .session-moon-icon {
+        font-size: 40px;
+    }
+
+    .session-moon-block {
+        padding-left: 6px;
+    }
+
+    .session-list {
+        gap: 12px;
+    }
+
+    .session-hours {
+        padding: 10px 5px 10px 5px;
+    }
+
+    .session-hour-pill .ampm {
+        font-size: 10px;
+    }
+
+    /* Removed .session-detail-grid rule as per instructions */
+
+    .session-detail {
+        padding: 8px 0 10px;
+    }
+
+    .session-detail-row {
+        grid-template-columns: 98px 48px 1fr;
+    }
+
+    .session-detail-label {
+        font-size: 10px;
+        padding: 5px 6px;
+        text-align: right;
+    }
+
+    .session-hours-detail {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .session-detail-value {
+        font-size: 10px;
+    }
+
+    .date-full {
+        display: none;
+    }
+
+    .date-short {
+        display: inline;
+    }
+}
+
+.detail-rag-pill {
+    display: inline;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font-size: inherit;
+    line-height: 1.1;
+}
+
+@media (max-width: 600px) {
+    .detail-rag-pill {
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+}
+
+.detail-rag-g {
+    color: #2ecc71;
+}
+
+.detail-rag-a {
+    color: #f39c12;
+}
+
+.detail-rag-r {
+    color: #e74c3c;
+}
+
+.detail-rag-neutral {
+    color: #d3d9e3;
 }

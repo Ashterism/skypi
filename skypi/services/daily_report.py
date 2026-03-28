@@ -116,28 +116,29 @@ def next_three_days(astro_forecast_data):
 
 def get_daily_report():
     # get forecast data grouped by astro session
-    astro_forecast_data = get_astro_sessions()
+    astro_session_data = get_astro_sessions()
     
     # extract day 0 (todays) overall rating
-    go_no_go = astro_forecast_data[0].astro_rating
+    go_no_go = astro_session_data[0].astro_rating
 
     # use day 0 data to return todays "at a glance"
-    at_a_glance = tonight_at_a_glance(astro_forecast_data[0].astro_hours)
+    at_a_glance = tonight_at_a_glance(astro_session_data[0].astro_hours)
 
     # get next three (astro) days forecast
-    next_iii_days = next_three_days(astro_forecast_data[1:4])
+    next_iii_days = next_three_days(astro_session_data[1:4])
 
     # unpack astro_sessions and extract all hourly forecasts
     hourly_breakdown = []
-    for session in astro_forecast_data:
+    for session in astro_session_data:
         hourly_breakdown.extend(session.astro_hours)
 
 
     return {
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
-        "hourly_breakdown": hourly_breakdown,
-        "next_three_days" : next_iii_days
+        "next_three_days": next_iii_days,
+        "hourly_breakdown": hourly_breakdown, # expect to remove in refactor
+        "astro_session_data": astro_session_data,
     }
 
 

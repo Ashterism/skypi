@@ -45,26 +45,32 @@
 - [x] Verify ordering is tonight + next 3 nights / or next 3 after tonight
 - [x] Tag release `v1.3`
 
-## V1.4 – Hourly values + richer hourly UI
-- [ ] Update hourly breakdown to show value + RAG
-- [ ] Decide display format for hourly values
-- [ ] Improve hourly table layout
-- [ ] Improve readability for the small screen
-- [ ] Format time display
-- [ ] Tag release `v1.4`
+## V1.4 – Session-first hourly UI
+- [x] Redesign hourly breakdown as astro-session rows
+- [x] Show astro session date as left-hand column
+- [x] Show hourly overall RAGs across each session row
+- [x] Add tap-to-expand for session detail
+- [x] Show detailed hourly values in expanded view (cloud, visibility, rain, etc.)
+- [x] Improve readability for the small screen
+- [x] Format hour labels for compact display
+- [x] Tag release `v1.4`
 
-## V2 – Multi-day forecast
+## V2 (original) – Multi-day forecast (now largely completed via earlier refactors)
 - [x] Fetch multi-day hourly forecast (~14 days) (structurally supported via forecaster)
 - [x] Generate moon data for the same timestamp range
 - [x] Merge weather + moon into a single dataset
 - [x] Add helper to group hours by astro session
 - [x] Add helper to build night window (19:00–01:00)
 - [x] Build nightly summary objects (AstroSession)
-- [ ] Change forecast horizon from 3 days to 14 days (config update)
+
+## V2 – Extended horizon + caching
+- [ ] Change forecast horizon from 4 days to 14 days
+- [ ] Confirm astro-session UI works cleanly with 14-day horizon
 - [ ] Add forecast caching (~15 minute refresh)
+- [ ] Create forecast cache file
+- [ ] Store timestamp of last API fetch
+- [ ] Reuse cached forecast if recent
 - [ ] Store merged hourly forecast data in cache file (JSON)
-- [ ] Implement lookahead for next three nights (handled in V1.3 UI layer)
-- [ ] Replace hard-coded preview rows with real data
 - [ ] Tag release `v2`
 
 ## V2.1 – Next good night
@@ -74,6 +80,14 @@
 - [ ] Handle "no good night found" case
 - [ ] Display next good night in UI
 - [ ] Tag release `v2.1`
+
+## V2.2 – Optimise device-scale UI
+- [ ] Refine GO / NO-GO screen layout for device view
+- [ ] Refine Tonight at a Glance layout for device view
+- [ ] Verify spacing and readability on target touchscreen resolution
+- [ ] Check fullscreen / kiosk presentation on device-sized viewport
+- [ ] Finalise device typography and spacing scale
+- [ ] Tag release `v2.2`
 
 ## Refactor / architecture
 - [ ] Ensure providers only fetch/map raw data

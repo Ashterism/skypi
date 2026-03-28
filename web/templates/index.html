@@ -9,6 +9,7 @@
     <title>SkyPi Tonight</title>
 </head>
 <body>
+    <div class="page-shell">
     <main class="dashboard">
         <section class="hero">
             <div class="hero-card">
@@ -74,34 +75,139 @@
         </aside>
     </main>
 
-    <section class="detail-panel">
-        <h2>Hourly breakdown</h2>
-        <table class="hourly-table">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Overall</th>
-                    <th>Cloud</th>
-                    <th>Dew</th>
-                    <th>Wind</th>
-                    <th>Moon</th>
-                    <th>Visibility</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for h in hourly_breakdown %}
-                <tr>
-                    <td>{{ h.time | replace('T', ' - ') }}</td>
-                    <td><span class="factor-rag factor-{{ h.overall_rating|lower }}">{{ h.overall_rating }}</span></td>
-                    <td><span class="factor-rag factor-{{ h.cloud_rating|lower }}">{{ h.cloud_rating }}</span></td>
-                    <td><span class="factor-rag factor-{{ h.dew_rating|lower }}">{{ h.dew_rating }}</span></td>
-                    <td><span class="factor-rag factor-{{ h.wind_rating|lower }}">{{ h.wind_rating }}</span></td>
-                    <td><span class="factor-rag factor-{{ h.moon_rating|lower }}">{{ h.moon_rating }}</span></td>
-                    <td><span class="factor-rag factor-{{ h.visibility_rating|lower }}">{{ h.visibility_rating }}</span></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <section class="daily-forecast-panel">
+        <h2>Lookahead Forecast</h2>
+        <div class="session-list">
+            {% for astroday in astro_session_data %}
+            <div class="session-card is-collapsed">
+                <button class="session-main" type="button" aria-expanded="false">
+                    <div class="session-date-block factor-{{ astroday.astro_rating['rag']|lower }}">
+                        <div class="session-date-day">{{ astroday.astro_date.strftime('%d') }}</div>
+                        <div class="session-date-text">
+                            <div>
+                                <span class="date-full">{{ astroday.astro_date.strftime('%A') }}</span>
+                                <span class="date-short">{{ astroday.astro_date.strftime('%a') }}</span>
+                            </div>
+                            <div class="session-date-month">
+                                <span class="date-full">{{ astroday.astro_date.strftime('%B') }}</span>
+                                <span class="date-short">{{ astroday.astro_date.strftime('%b') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="session-moon-block">
+                        <div class="session-moon-icon">🌙</div>
+                    </div>
+
+                    <div class="session-hours">
+                        {% for h in astroday.astro_hours %}
+                        <div class="session-hour">
+                            <div class="session-hour-pill factor-rag factor-{{ h.overall_rating|lower }}">
+                                {{ h.time.strftime('%-I') }}<span class="ampm">{{ h.time.strftime('%p')|lower }}</span>
+                            </div>
+                            <div class="session-hour-sub">
+                                {% if h.moon_elevation > 0 %}
+                                    ↑ {{ '%.0f'|format(h.moon_elevation) }}
+                                {% else %}
+                                    ↓ {{ '%.0f'|format(-h.moon_elevation) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </button>
+
+                <div class="session-detail">
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Cloud (%)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-{{ h.cloud_rating|lower }}">{{ h.cloud_pct|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Temp (°)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-neutral">{{ h.temp_c|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Dew (°)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-{{ h.dew_rating|lower }}">{{ h.dew_point_c|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Wind (km/h)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-{{ h.wind_rating|lower }}">{{ h.wind_kmh|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Gust (km/h)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-{{ h.wind_rating|lower }}">{{ h.gust_kmh|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Rain (%)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-neutral">{{ h.rain_pct|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="session-detail-row">
+                        <div class="session-detail-label">Vis (km)</div>
+                        <div class="session-hours session-hours-detail">
+                            {% for h in astroday.astro_hours %}
+                            <div class="session-detail-value">
+                                <span class="detail-rag-pill detail-rag-{{ h.visibility_rating|lower }}">{{ (h.visibility_m / 1000)|round|int }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </section>
+</div>
+<script>
+document.querySelectorAll('.session-main').forEach((button) => {
+  button.addEventListener('click', () => {
+    const card = button.closest('.session-card');
+    const isCollapsed = card.classList.toggle('is-collapsed');
+    button.setAttribute('aria-expanded', String(!isCollapsed));
+  });
+});
+</script>
 </body>
 </html>
