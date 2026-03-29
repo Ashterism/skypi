@@ -1,9 +1,10 @@
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from .evaluator import get_evaluations
+
 from ..providers.weather_openmeteo import get_hourly_forecast
 from ..providers.moon_astral import get_hourlymoon
-from ..evaluator import get_evaluations
 
 from ..models import HourlyForecast
 from ..config import DAYS, START_TIME, END_TIME, TIMEZONE

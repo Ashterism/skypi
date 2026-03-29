@@ -25,6 +25,7 @@
 ## V1.2.1 – Night session refactor
 - [x] Refactor forecaster to work with night sessions instead of calendar days
 - [x] Update forecaster to handle cross-midnight astro window correctly
+- [x] Add helper to build night window (19:00–01:00)
 - [x] Filter merged hourly data to the astro window only
 - [x] Assign session date to each hourly record
 - [x] Map 00:00–01:00 hours to the previous evening
@@ -32,7 +33,9 @@
 
 ## V1.2.2 – Session summary layer
 - [x] Group rated hours by `astro_date`
+- [x] Add helper to group hours by astro session
 - [x] Build nightly/session summary structure from grouped hours
+- [x] Build nightly summary objects (`AstroSession`)
 - [x] Update daily_report to use one astro session for "Tonight at a glance"
 - [x] Make evaluator return rated hourly data compatible with astro sessions
 - [x] Tag release `v1.2.2`
@@ -55,65 +58,56 @@
 - [x] Format hour labels for compact display
 - [x] Tag release `v1.4`
 
-## V2 (original) – Multi-day forecast (now largely completed via earlier refactors)
-- [x] Fetch multi-day hourly forecast (~14 days) (structurally supported via forecaster)
-- [x] Generate moon data for the same timestamp range
-- [x] Merge weather + moon into a single dataset
-- [x] Add helper to group hours by astro session
-- [x] Add helper to build night window (19:00–01:00)
-- [x] Build nightly summary objects (AstroSession)
-
-## V2 – Extended horizon + caching
+## V1.5 – Two-week horizon & Next-good night
 - [ ] Change forecast horizon from 4 days to 14 days
 - [ ] Confirm astro-session UI works cleanly with 14-day horizon
-- [ ] Add forecast caching (~15 minute refresh)
-- [ ] Create forecast cache file
-- [ ] Store timestamp of last API fetch
-- [ ] Reuse cached forecast if recent
-- [ ] Store merged hourly forecast data in cache file (JSON)
-- [ ] Tag release `v2`
-
-## V2.1 – Next good night
+- [ ] Ensure lookahead starts from today / tonight correctly
 - [ ] Scan upcoming nights within a fortnight
 - [ ] Define rule for what counts as a "good" night
 - [ ] Return first qualifying night
 - [ ] Handle "no good night found" case
 - [ ] Display next good night in UI
-- [ ] Tag release `v2.1`
+- [ ] Tag release `v1.5`
 
-## V2.2 – Optimise device-scale UI
+## V1.6 – Optimise device-scale UI
 - [ ] Refine GO / NO-GO screen layout for device view
 - [ ] Refine Tonight at a Glance layout for device view
 - [ ] Verify spacing and readability on target touchscreen resolution
 - [ ] Check fullscreen / kiosk presentation on device-sized viewport
 - [ ] Finalise device typography and spacing scale
-- [ ] Tag release `v2.2`
+- [ ] Tag release `v1.6`
+
+## V1.7 – Runtime refresh / device behaviour
+- [ ] Decide refresh approach for permanent display mode
+- [ ] Ensure the app refreshes forecast/session data automatically on a sensible interval
+- [ ] Decide whether refresh is app-driven, page-driven, or both
+- [ ] Ensure an open device display updates without manual reload
+- [ ] Confirm refresh behaviour works cleanly in fullscreen / kiosk mode
+- [ ] Tag release `v1.7`
 
 ## Refactor / architecture
-- [ ] Ensure providers only fetch/map raw data
-- [ ] Keep evaluator pure logic
-- [ ] Keep nightly_report as orchestrator
+- [x] Ensure providers only fetch/map raw data
+- [x] Keep evaluator pure logic
+- [x] Keep daily_report as orchestrator
 - [ ] Move datetime helpers to `utils/time.py`
-- [ ] Add NightSummary dataclass
+- [ ] Remove obsolete models / clean up old pre-refactor leftovers
 
-## Data / caching
+## Future development (V2+)
+- [ ] Add forecast caching (~15 minute refresh)
 - [ ] Create forecast cache file
 - [ ] Store timestamp of last API fetch
 - [ ] Reuse cached forecast if recent
+- [ ] Store merged hourly forecast data in cache file (JSON)
 - [ ] Add optional debug CSV export
+- [ ] Review whether session-level persistence is worth doing for learning / future timelapse work
 
 ## UI polish
-- [ ] Improve hourly table readability
 - [ ] Finalise GO / NO-GO hero layout
 - [ ] Finalise 3-night preview styling
-- [ ] Verify layout on target screen resolution
+- [ ] Finalise expanded session-detail styling
+- [ ] Review web vs device consistency where intentional
 
-
-----
-Not planned yet
-
-move check_data (forecaster) to /tests
-
+---
 
 
 SkyPi/

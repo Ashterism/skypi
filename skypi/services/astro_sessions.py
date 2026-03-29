@@ -84,6 +84,10 @@ def create_astro_sessions():
 
 
 def get_astro_sessions():
+    # check cache
+    # if cache more than 15mins old...
+        # then get a new one
+    # that checked (or done)... return the cached values
     astro_session_data = create_astro_sessions()
     return astro_session_data
 

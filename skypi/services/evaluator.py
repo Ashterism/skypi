@@ -103,7 +103,7 @@ def get_evaluations(hourly_forecast):
 
 
 if __name__ == "__main__":
-    from .services.forecaster import get_forecast
+    from .forecaster import get_forecast
 
     hourly_forecast = get_forecast()
 

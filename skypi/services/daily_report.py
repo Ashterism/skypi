@@ -3,7 +3,7 @@ from datetime import date
 from .forecaster import get_forecast
 from .astro_sessions import get_astro_sessions
 
-from ..evaluator import get_evaluations
+from .evaluator import get_evaluations
 from ..utils.moon import get_moon_position, get_moon_phase
 
 from ..config import START_TIME, END_TIME
