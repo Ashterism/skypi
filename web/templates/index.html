@@ -12,71 +12,89 @@
     <div class="page-shell">
     <main class="dashboard">
         <section class="hero">
-            <div class="hero-card">
-                <h1 class="hero-status factor-{{ go_no_go['rag']|lower }}">
-                    {% if go_no_go['rag']|lower == 'g' %}
-                        GO!
-                    {% else %}
-                        <div class="status-main">NO-GO</div>
-                        <div class="status-next">
-                            Next good night:
-                            {% if next_good_night['next_good_night'] %}
-                                {{ next_good_night['next_good_night'].strftime('%a %d %b') }} {{ next_good_night['next_good_night_rating'] }}
-                            {% else %}
-                                none
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </h1>
+            <div class="hero-top-row">
+                <div class="hero-card">
+                    <h1 class="hero-status factor-{{ go_no_go['rag']|lower }}">
+                        {% if go_no_go['rag']|lower == 'g' %}
+                            GO!
+                        {% else %}
+                            <div class="status-main">NO-GO</div>
+                        {% endif %}
+                    </h1>
+                </div>
+                <div class="hero-device-datetime">
+                    <div class="hero-device-time" id="device-clock-time"></div>
+                    <div class="hero-device-date" id="device-clock-date"></div>
+                </div>
             </div>
+
+            {% if go_no_go['rag']|lower != 'g' %}
+            <div class="status-next">
+                <div class="next-label">Next usable:</div>
+                {% if next_good_night['next_good_night'] %}
+                    <div class="next-value next-value-mobile next-rag-{{ next_good_night['next_good_night_rating']|lower }}">
+                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }} · {{ next_good_night['start_time'] }} – {{ next_good_night['end_time'] }} ·
+                        {% if next_good_night['next_good_night_rating'] == 'G' %}
+                            Good
+                        {% elif next_good_night['next_good_night_rating'] == 'A' %}
+                            Few hours
+                        {% else %}
+                            None in next 2 weeks
+                        {% endif %}
+                    </div>
+                    <div class="next-value next-value-desktop next-rag-{{ next_good_night['next_good_night_rating']|lower }}">
+                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }}<br>
+                        {{ next_good_night['start_time'] }} – {{ next_good_night['end_time'] }}<br>
+                        {% if next_good_night['next_good_night_rating'] == 'G' %}
+                            Good
+                        {% elif next_good_night['next_good_night_rating'] == 'A' %}
+                            Few hours
+                        {% else %}
+                            None in next 2 weeks
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="next-value next-value-mobile next-rag-r">None in next 2 weeks</div>
+                    <div class="next-value next-value-desktop next-rag-r">None in next 2 weeks</div>
+                {% endif %}
+            </div>
+            {% endif %}
             
-            <div class="next-good">
-                <table class="next-days">
-                    <tbody>
-                        {% for d in next_three_days %}
-                        <tr>
-                            <td>
-                                <span class="day-colour factor-{{ d.rating['rag']|lower }}"></span>
-                            </td>
-                            <td class="day-date">{{ d.date }}</td>
-                            <td class="day-moon">{{ d.moon }}</td>
-                            <td class="day-cloud">☁ {{ d.cloud }}</td>
-                            <td class="day-vis">🔭 {{ d.visibility }}</td>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
             
         </section>
 
         <aside class="summary">
-            <h2>Tonight at a glance</h2>
-            <div class="factor-list">
-                <div class="factor-row">
-                    <span class="factor-label">Moon</span>
-                    <span class="factor-value">{{ at_a_glance['moon_range'] }}</span>
+            <div class="summary-layout">
+                <div class="summary-main">
+                    <h2>Tonight at a glance</h2>
+                    <div class="factor-list">
+                        <div class="factor-row">
+                            <span class="factor-label">Wind</span>
+                            <span class="factor-value">{{ at_a_glance['wind_range'] }}</span>
+                        </div>
+                        <div class="factor-row">
+                            <span class="factor-label">Cloud</span>
+                            <span class="factor-value">{{ at_a_glance['cloud_range'] }}</span>
+                        </div>
+                        <div class="factor-row">
+                            <span class="factor-label">Visibility</span>
+                            <span class="factor-value">{{ at_a_glance['visibility_range'] }}</span>
+                        </div>
+                        <div class="factor-row">
+                            <span class="factor-label">Temp</span>
+                            <span class="factor-value">{{ at_a_glance['temp_range'] }}</span>
+                        </div>
+                        <div class="factor-row">
+                            <span class="factor-label">Rain</span>
+                            <span class="factor-value">{{ at_a_glance['rain_range'] }}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="factor-row">
-                    <span class="factor-label">Wind</span>
-                    <span class="factor-value">{{ at_a_glance['wind_range'] }}</span>
-                </div>
-                <div class="factor-row">
-                    <span class="factor-label">Cloud</span>
-                    <span class="factor-value">{{ at_a_glance['cloud_range'] }}</span>
-                </div>
-                <div class="factor-row">
-                    <span class="factor-label">Visibility</span>
-                    <span class="factor-value">{{ at_a_glance['visibility_range'] }}</span>
-                </div>
-                <div class="factor-row">
-                    <span class="factor-label">Temp</span>
-                    <span class="factor-value">{{ at_a_glance['temp_range'] }}</span>
-                </div>
-                <div class="factor-row">
-                    <span class="factor-label">Rain</span>
-                    <span class="factor-value">{{ at_a_glance['rain_range'] }}</span>
+
+                <div class="summary-moon">
+                    <img class="summary-moon-image" src="/static/moon/phase_waxing_gibbous.4801_print.jpg" alt="Moon phase">
+                    <div class="summary-moon-value">{{ at_a_glance['moon_range'] }}</div>
+                    <div class="summary-moon-chart-placeholder"></div>
                 </div>
             </div>
         </aside>
@@ -215,6 +233,31 @@ document.querySelectorAll('.session-main').forEach((button) => {
     button.setAttribute('aria-expanded', String(!isCollapsed));
   });
 });
+
+function updateDeviceClock() {
+  const now = new Date();
+  const timeEl = document.getElementById('device-clock-time');
+  const dateEl = document.getElementById('device-clock-date');
+  if (!timeEl || !dateEl) return;
+
+  const time = now.toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).replace(/\s?(am|pm|AM|PM)$/, '<span class="hero-device-ampm">$1</span>');
+
+  const date = now.toLocaleDateString([], {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+
+  timeEl.innerHTML = time;
+  dateEl.textContent = date;
+}
+
+updateDeviceClock();
+setInterval(updateDeviceClock, 1000);
 </script>
 </body>
 </html>

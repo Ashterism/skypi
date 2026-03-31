@@ -70,6 +70,9 @@
 - [x] Tag release `v1.5`
 
 ## V1.6 – Optimise device-scale UI
+- [x] Redesign GO / NO-GO screen layout concept
+- [ ] Remodel current device view to match updated design
+- [ ] Build moon-impact graph for device summary view
 - [ ] Refine GO / NO-GO screen layout for device view
 - [ ] Refine Tonight at a Glance layout for device view
 - [ ] Verify spacing and readability on target touchscreen resolution

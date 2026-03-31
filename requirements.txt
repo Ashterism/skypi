@@ -1,7 +1,5 @@
 
 
-Libraries required....
-
 requests
 astral
 flask
