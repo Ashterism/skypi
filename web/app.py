@@ -16,7 +16,7 @@ def tonight():
         go_no_go = report["go_no_go"],
         at_a_glance = report["at_a_glance"],
         next_three_days = report["next_three_days"],
-        hourly_breakdown = report["hourly_breakdown"],
+        next_good_night = report["next_good_night"],
         astro_session_data = report["astro_session_data"],
     )
 

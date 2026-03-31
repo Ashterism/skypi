@@ -59,15 +59,15 @@
 - [x] Tag release `v1.4`
 
 ## V1.5 – Two-week horizon & Next-good night
-- [ ] Change forecast horizon from 4 days to 14 days
-- [ ] Confirm astro-session UI works cleanly with 14-day horizon
-- [ ] Ensure lookahead starts from today / tonight correctly
-- [ ] Scan upcoming nights within a fortnight
-- [ ] Define rule for what counts as a "good" night
-- [ ] Return first qualifying night
-- [ ] Handle "no good night found" case
-- [ ] Display next good night in UI
-- [ ] Tag release `v1.5`
+- [x] Change forecast horizon from 4 days to 14 days
+- [x] Confirm astro-session UI works cleanly with 14-day horizon
+- [x] Ensure lookahead starts from today / tonight correctly
+- [x] Scan upcoming nights within a fortnight
+- [x] Define rule for what counts as a "good" night
+- [x] Return first qualifying night
+- [x] Handle "no good night found" case
+- [x] Display next good night in UI
+- [x] Tag release `v1.5`
 
 ## V1.6 – Optimise device-scale UI
 - [ ] Refine GO / NO-GO screen layout for device view

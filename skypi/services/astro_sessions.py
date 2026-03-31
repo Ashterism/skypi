@@ -1,4 +1,3 @@
-
 """
     python -m skypi.services.astro_sessions
 """
@@ -92,10 +91,37 @@ def get_astro_sessions():
     return astro_session_data
 
 
+def get_next_good_astro(astro_session_data):
+    # first pass: look for G
+    for session in astro_session_data:
+        rag = session.astro_rating["rag"]
+        if rag == "G":
+            return {
+                "next_good_night": session.astro_date,
+                "next_good_night_rating": "G"
+            }
+
+    # second pass: look for A
+    for session in astro_session_data:
+        rag = session.astro_rating["rag"]
+        if rag == "A":
+            return {
+                "next_good_night": session.astro_date,
+                "next_good_night_rating": "A"
+            }
+
+    # fallback: none found
+    return {
+        "next_good_night": None,
+        "next_good_night_rating": None
+    }
+    
+
+
 if __name__ == "__main__":
     astro_session_data = create_astro_sessions()
-    print(astro_session_data)
+    test = get_next_good_astro(astro_session_data)
+
+    print(test)
     print("ran")
-
-
 

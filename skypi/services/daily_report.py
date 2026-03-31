@@ -1,7 +1,6 @@
 from datetime import date
 
-from .forecaster import get_forecast
-from .astro_sessions import get_astro_sessions
+from .astro_sessions import get_astro_sessions, get_next_good_astro
 
 from .evaluator import get_evaluations
 from ..utils.moon import get_moon_position, get_moon_phase
@@ -127,6 +126,9 @@ def get_daily_report():
     # get next three (astro) days forecast
     next_iii_days = next_three_days(astro_session_data[1:4])
 
+    # get next good session
+    next_good_night = get_next_good_astro(astro_session_data)
+
     # unpack astro_sessions and extract all hourly forecasts
     hourly_breakdown = []
     for session in astro_session_data:
@@ -137,7 +139,7 @@ def get_daily_report():
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
         "next_three_days": next_iii_days,
-        "hourly_breakdown": hourly_breakdown, # expect to remove in refactor
+        "next_good_night" : next_good_night,
         "astro_session_data": astro_session_data,
     }
 

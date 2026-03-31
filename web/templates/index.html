@@ -18,7 +18,14 @@
                         GO!
                     {% else %}
                         <div class="status-main">NO-GO</div>
-                        <!-- <div class="status-next">Next good day: {{ go_no_go['next_good'] }}</div> -->
+                        <div class="status-next">
+                            Next good night:
+                            {% if next_good_night['next_good_night'] %}
+                                {{ next_good_night['next_good_night'].strftime('%a %d %b') }} {{ next_good_night['next_good_night_rating'] }}
+                            {% else %}
+                                none
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </h1>
             </div>
@@ -76,7 +83,7 @@
     </main>
 
     <section class="daily-forecast-panel">
-        <h2>Lookahead Forecast</h2>
+        <h2>Two-week lookahead</h2>
         <div class="session-list">
             {% for astroday in astro_session_data %}
             <div class="session-card is-collapsed">
