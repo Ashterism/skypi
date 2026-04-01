@@ -54,8 +54,8 @@
                         {% endif %}
                     </div>
                 {% else %}
-                    <div class="next-value next-value-mobile next-rag-r">None in next 2 weeks</div>
-                    <div class="next-value next-value-desktop next-rag-r">None in next 2 weeks</div>
+                    <div class="next-value next-value-mobile next-rag-r next-value-outlined">None in next 2 weeks</div>
+                    <div class="next-value next-value-desktop next-rag-r next-value-outlined">None in next 2 weeks</div>
                 {% endif %}
             </div>
             {% endif %}
@@ -92,9 +92,30 @@
                 </div>
 
                 <div class="summary-moon">
-                    <img class="summary-moon-image" src="/static/moon/phase_waxing_gibbous.4801_print.jpg" alt="Moon phase">
+                    <img class="summary-moon-image" src="/static/moon/phase_waxing_gibbous.4801_web_8bit.png" alt="Moon phase">
                     <div class="summary-moon-value">{{ at_a_glance['moon_range'] }}</div>
-                    <div class="summary-moon-chart-placeholder"></div>
+                    <div class="summary-moon-chart" aria-label="Moon elevation chart preview">
+                        <div class="summary-moon-chart-plot">
+                            <div class="summary-moon-chart-horizon"></div>
+
+                            <div class="summary-moon-chart-bar is-down" style="left: 10%; height: 30px;"></div>
+                            <div class="summary-moon-chart-bar is-down" style="left: 26%; height: 18px;"></div>
+                            <div class="summary-moon-chart-bar is-down is-amber" style="left: 42%; height: 6px;"></div>
+                            <div class="summary-moon-chart-bar is-up is-amber" style="left: 58%; height: 8px;"></div>
+                            <div class="summary-moon-chart-bar is-up" style="left: 74%; height: 20px;"></div>
+                            <div class="summary-moon-chart-bar is-up" style="left: 90%; height: 32px;"></div>
+                        </div>
+
+                        <div class="summary-moon-chart-labels">
+                            <span>19</span>
+                            <span>20</span>
+                            <span>21</span>
+                            <span>22</span>
+                            <span>23</span>
+                            <span>24</span>
+                            <span>01</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>

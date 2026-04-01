@@ -103,6 +103,10 @@ body {
     line-height: 1.2;
 }
 
+.next-value-outlined {
+    -webkit-text-stroke: 0.1px rgba(255, 255, 255, 0.9);
+}
+
 .next-value-mobile {
     display: none;
 }
@@ -243,12 +247,53 @@ body {
     text-align: center;
 }
 
-.summary-moon-chart-placeholder {
+.summary-moon-chart {
     width: 160px;
-    height: 60px;
-    border: 1px dashed #9aa4b2;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.03);
+}
+
+.summary-moon-chart-plot {
+    position: relative;
+    width: 100%;
+    height: 52px;
+}
+
+.summary-moon-chart-horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 28px;
+    border-top: 1px dashed rgba(230, 234, 242, 0.7);
+}
+
+.summary-moon-chart-bar {
+    position: absolute;
+    width: 10px;
+    margin-left: -5px;
+    background: rgba(230, 234, 242, 0.9);
+    border: 1px solid #d14a4a;
+    box-sizing: border-box;
+}
+
+.summary-moon-chart-bar.is-up {
+    bottom: 24px;
+}
+
+.summary-moon-chart-bar.is-down {
+    top: 28px;
+    border-color: #7fbf4d;
+}
+
+.summary-moon-chart-bar.is-amber {
+    border-color: #d4b23e;
+}
+
+.summary-moon-chart-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1;
+    color: #f7f9fc;
 }
 
 .summary h2,
@@ -676,9 +721,38 @@ body {
         height: 140px;
     }
 
-    .summary-moon-chart-placeholder {
+    .summary-moon-value {
+        padding-bottom: 10px;
+    }
+
+    .summary-moon-chart {
         width: 140px;
-        height: 56px;
+    }
+
+    .summary-moon-chart-plot {
+        height: 48px;
+    }
+
+    .summary-moon-chart-horizon {
+        top: 24px;
+    }
+
+    .summary-moon-chart-bar {
+        width: 9px;
+        margin-left: -4.5px;
+    }
+
+    .summary-moon-chart-bar.is-up {
+        bottom: 22px;
+    }
+
+    .summary-moon-chart-bar.is-down {
+        top: 24px;
+    }
+
+    .summary-moon-chart-labels {
+        margin-top: 4px;
+        font-size: 9px;
     }
 
     .session-date-block {

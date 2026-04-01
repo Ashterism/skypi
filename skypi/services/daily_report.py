@@ -84,32 +84,37 @@ def calc_best_window_avgs(best_hours,rating):
 
     return best_avgs
 
+def summary_moon_data():
+    ...
+    # get todays moon phase
+    # per hour, get elevations, elevation rating (G, R, A), 
+    # height, and direction (above or below horizon) 
 
 
-def next_three_days(astro_forecast_data):
+# def next_three_days(astro_forecast_data):
 
-    # make dict of required values
-    next_three_days_data = []
-    for session in astro_forecast_data:
-        first_hour = session.astro_hours[0]
+#     # make dict of required values
+#     next_three_days_data = []
+#     for session in astro_forecast_data:
+#         first_hour = session.astro_hours[0]
 
-        moon_phase = get_moon_phase(first_hour.moon_phase)
-        moon_position = get_moon_position(first_hour.moon_elevation)
+#         moon_phase = get_moon_phase(first_hour.moon_phase)
+#         moon_position = get_moon_position(first_hour.moon_elevation)
 
-        rating = session.astro_rating
-        best_hours = session.astro_rating_window["best_window_hours"]
+#         rating = session.astro_rating
+#         best_hours = session.astro_rating_window["best_window_hours"]
 
-        day = {
-            "date" : session.astro_date.strftime("%a %d %b"),
-            "rating" : rating,
-            "moon" : (f"{moon_phase} {moon_position}"),
-            "cloud" : calc_best_window_avgs(best_hours, rating)["avg_cloud"],
-            "visibility" : calc_best_window_avgs(best_hours, rating)["avg_visibility"]
-        }
-        next_three_days_data.append(day)
+#         day = {
+#             "date" : session.astro_date.strftime("%a %d %b"),
+#             "rating" : rating,
+#             "moon" : (f"{moon_phase} {moon_position}"),
+#             "cloud" : calc_best_window_avgs(best_hours, rating)["avg_cloud"],
+#             "visibility" : calc_best_window_avgs(best_hours, rating)["avg_visibility"]
+#         }
+#         next_three_days_data.append(day)
 
 
-    return next_three_days_data
+#     return next_three_days_data
    
 
 
@@ -124,7 +129,7 @@ def get_daily_report():
     at_a_glance = tonight_at_a_glance(astro_session_data[0].astro_hours)
 
     # get next three (astro) days forecast
-    next_iii_days = next_three_days(astro_session_data[1:4])
+    # next_iii_days = next_three_days(astro_session_data[1:4])
 
     # get next good session
     next_good_night = get_next_good_astro(astro_session_data)
@@ -138,7 +143,7 @@ def get_daily_report():
     return {
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
-        "next_three_days": next_iii_days,
+        # "next_three_days": next_iii_days,
         "next_good_night" : next_good_night,
         "astro_session_data": astro_session_data,
     }
