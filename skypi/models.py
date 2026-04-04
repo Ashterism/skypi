@@ -61,6 +61,7 @@ class AstroSession:
     astro_hours: List[HourlyForecast] | None = None
     astro_rating: str | None = None
     astro_rating_window: dict | None = None
+    astro_moon: str | None = None
 
 
 #REMOVE AFTER REFACTOR OF EVALUATOR (or keep and refactor hourlyforecast to nestle)

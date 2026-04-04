@@ -56,17 +56,17 @@ def get_hourlymoon(start_dt, end_dt):
    
     hours = []
     current_dt = start_dt
-    ph = moon_phase(start_dt.date())
+
 
     while current_dt <= end_dt:
         hour_dt_utc = current_dt.astimezone(datetime.timezone.utc)  # fix for astral/UTC issue
         _, el, _ = moon_location(hour_dt_utc)
+        ph = moon_phase(current_dt.date())
 
         hours.append(HourlyMoon(time=current_dt, phase=ph, el=el))
         current_dt += datetime.timedelta(hours=1)
 
     return hours
-
 
 
 if __name__ == "__main__":

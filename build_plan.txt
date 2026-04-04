@@ -71,14 +71,14 @@
 
 ## V1.6 – Optimise device-scale UI
 - [x] Redesign GO / NO-GO screen layout concept
-- [ ] Remodel current device view to match updated design
-- [ ] Build moon-impact graph for device summary view
-- [ ] Refine GO / NO-GO screen layout for device view
-- [ ] Refine Tonight at a Glance layout for device view
-- [ ] Verify spacing and readability on target touchscreen resolution
-- [ ] Check fullscreen / kiosk presentation on device-sized viewport
-- [ ] Finalise device typography and spacing scale
-- [ ] Tag release `v1.6`
+- [x] Remodel current device view to match updated design
+- [x] Build moon-impact graph for device summary view
+- [x] Refine GO / NO-GO screen layout for device view
+- [x] Refine Tonight at a Glance layout for device view
+- [x] Verify spacing and readability on target touchscreen resolution
+- [x] Check fullscreen / kiosk presentation on device-sized viewport
+- [x] Finalise device typography and spacing scale
+- [x] Tag release `v1.6`
 
 ## V1.7 – Runtime refresh / device behaviour
 - [ ] Decide refresh approach for permanent display mode

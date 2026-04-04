@@ -1,6 +1,8 @@
 from datetime import date
+from pathlib import Path
 
 from .astro_sessions import get_astro_sessions, get_next_good_astro
+from ..utils.moon import get_moon_phase_image
 
 from .evaluator import get_evaluations
 from ..utils.moon import get_moon_position, get_moon_phase
@@ -59,6 +61,7 @@ def tonight_at_a_glance(hourly_forecast):
         "moon_range": moon_range,
     }
 
+
 def calc_best_window_avgs(best_hours,rating):
     cloud_vals = []
     visibility_vals = []
@@ -84,38 +87,50 @@ def calc_best_window_avgs(best_hours,rating):
 
     return best_avgs
 
-def summary_moon_data():
-    ...
-    # get todays moon phase
-    # per hour, get elevations, elevation rating (G, R, A), 
-    # height, and direction (above or below horizon) 
 
+def summary_moon_data(todays_astro_hours):
+    moon_hours = []
+    moon_phase = todays_astro_hours[0].moon_phase
+    moon_phase_image = get_moon_phase_image(moon_phase)
 
-# def next_three_days(astro_forecast_data):
+    
+    for i, hr in enumerate(todays_astro_hours):
+        hr_el = hr.moon_elevation
 
-#     # make dict of required values
-#     next_three_days_data = []
-#     for session in astro_forecast_data:
-#         first_hour = session.astro_hours[0]
+        # rating
+        if hr_el >= 5:
+            rating = "R"
+        elif -18 <= hr_el < 5:
+            rating = "A"
+        else:
+            rating = "G"
 
-#         moon_phase = get_moon_phase(first_hour.moon_phase)
-#         moon_position = get_moon_position(first_hour.moon_elevation)
+        # label
+        hour_label = hr.time.strftime("%H")
 
-#         rating = session.astro_rating
-#         best_hours = session.astro_rating_window["best_window_hours"]
+        # position (simple spacing)
+        left_positions = [5, 20, 35, 50, 65, 80, 95]
+        left_pct = left_positions[i]
 
-#         day = {
-#             "date" : session.astro_date.strftime("%a %d %b"),
-#             "rating" : rating,
-#             "moon" : (f"{moon_phase} {moon_position}"),
-#             "cloud" : calc_best_window_avgs(best_hours, rating)["avg_cloud"],
-#             "visibility" : calc_best_window_avgs(best_hours, rating)["avg_visibility"]
-#         }
-#         next_three_days_data.append(day)
+        # height scaling
+        height_pct = abs(hr_el) / 90
 
+        moon_hour = {
+            "hour_label": hour_label,
+            "elevation": hr_el,
+            "rating": rating,
+            "left_pct": left_pct,
+            "height_pct": height_pct,
+        }
 
-#     return next_three_days_data
-   
+        moon_hours.append(moon_hour)
+
+    return {
+        "moon_phase_image" : moon_phase_image,
+        "moon_hours" : moon_hours,
+
+    }
+
 
 
 def get_daily_report():
@@ -128,8 +143,8 @@ def get_daily_report():
     # use day 0 data to return todays "at a glance"
     at_a_glance = tonight_at_a_glance(astro_session_data[0].astro_hours)
 
-    # get next three (astro) days forecast
-    # next_iii_days = next_three_days(astro_session_data[1:4])
+    # get moon summary info
+    summary_moon = summary_moon_data(astro_session_data[0].astro_hours)
 
     # get next good session
     next_good_night = get_next_good_astro(astro_session_data)
@@ -143,7 +158,7 @@ def get_daily_report():
     return {
         "go_no_go": go_no_go, 
         "at_a_glance": at_a_glance,
-        # "next_three_days": next_iii_days,
+        "summary_moon" : summary_moon,
         "next_good_night" : next_good_night,
         "astro_session_data": astro_session_data,
     }

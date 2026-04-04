@@ -12,6 +12,16 @@
     <div class="page-shell">
     <main class="dashboard">
         <section class="hero">
+            <div class="hero-location desktop-only">
+                <div class="eyebrow">Location</div>
+                <div class="hero-location-row">
+                    <img src="/static/img/drop-pin-10077_32.png" class="hero-location-pin" alt="Location pin">
+                    <div class="hero-location-text">
+                        <div class="hero-location-name">Abu Dhabi Desert</div>
+                        <div class="hero-location-coords">23.5505, 54.7457</div>
+                    </div>
+                </div>
+            </div>
             <div class="hero-top-row">
                 <div class="hero-card">
                     <h1 class="hero-status factor-{{ go_no_go['rag']|lower }}">
@@ -30,28 +40,26 @@
 
             {% if go_no_go['rag']|lower != 'g' %}
             <div class="status-next">
-                <div class="next-label">Next usable:</div>
+                <div class="next-label">
+                    {% if next_good_night['next_good_night_rating'] == 'G' %}
+                        Best window:
+                    {% else %}
+                        Next usable:
+                    {% endif %}
+                </div>
                 {% if next_good_night['next_good_night'] %}
                     <div class="next-value next-value-mobile next-rag-{{ next_good_night['next_good_night_rating']|lower }}">
-                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }} · {{ next_good_night['start_time'] }} – {{ next_good_night['end_time'] }} ·
-                        {% if next_good_night['next_good_night_rating'] == 'G' %}
-                            Good
-                        {% elif next_good_night['next_good_night_rating'] == 'A' %}
-                            Few hours
-                        {% else %}
-                            None in next 2 weeks
+                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }}
+                        {% if next_good_night['start_time'] and next_good_night['end_time'] %}
+                            · {{ next_good_night['start_time'] }} - {{ next_good_night['end_time'] }}
                         {% endif %}
                     </div>
                     <div class="next-value next-value-desktop next-rag-{{ next_good_night['next_good_night_rating']|lower }}">
-                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }}<br>
-                        {{ next_good_night['start_time'] }} – {{ next_good_night['end_time'] }}<br>
-                        {% if next_good_night['next_good_night_rating'] == 'G' %}
-                            Good
-                        {% elif next_good_night['next_good_night_rating'] == 'A' %}
-                            Few hours
-                        {% else %}
-                            None in next 2 weeks
+                        {{ next_good_night['next_good_night'].strftime('%a %d %b') }}
+                        {% if next_good_night['start_time'] and next_good_night['end_time'] %}
+                            · {{ next_good_night['start_time'] }} - {{ next_good_night['end_time'] }}
                         {% endif %}
+                        · {{ next_good_night['duration_hours'] }} hour window
                     </div>
                 {% else %}
                     <div class="next-value next-value-mobile next-rag-r next-value-outlined">None in next 2 weeks</div>
@@ -66,8 +74,8 @@
         <aside class="summary">
             <div class="summary-layout">
                 <div class="summary-main">
-                    <h2>Tonight at a glance</h2>
-                    <div class="factor-list">
+                        <h2 class="desktop-only">Tonight’s Weather</h2>
+                        <h2 class="mobile-only">Tonight at a glance</h2>                    <div class="factor-list">
                         <div class="factor-row">
                             <span class="factor-label">Wind</span>
                             <span class="factor-value">{{ at_a_glance['wind_range'] }}</span>
@@ -92,30 +100,27 @@
                 </div>
 
                 <div class="summary-moon">
-                    <img class="summary-moon-image" src="/static/moon/phase_waxing_gibbous.4801_web_8bit.png" alt="Moon phase">
-                    <div class="summary-moon-value">{{ at_a_glance['moon_range'] }}</div>
-                    <div class="summary-moon-chart" aria-label="Moon elevation chart preview">
-                        <div class="summary-moon-chart-plot">
-                            <div class="summary-moon-chart-horizon"></div>
+                    <div class="summary-moon-meta">
+                        <div class="summary-moon-title desktop-only">Tonight’s Moon</div>                        <div class="summary-moon-value">{{ at_a_glance['moon_range'] }}</div>
+                        <div class="summary-moon-chart" aria-label="Moon elevation chart preview">
+                            <div class="summary-moon-chart-plot">
+                                <div class="summary-moon-chart-horizon"></div>
 
-                            <div class="summary-moon-chart-bar is-down" style="left: 10%; height: 30px;"></div>
-                            <div class="summary-moon-chart-bar is-down" style="left: 26%; height: 18px;"></div>
-                            <div class="summary-moon-chart-bar is-down is-amber" style="left: 42%; height: 6px;"></div>
-                            <div class="summary-moon-chart-bar is-up is-amber" style="left: 58%; height: 8px;"></div>
-                            <div class="summary-moon-chart-bar is-up" style="left: 74%; height: 20px;"></div>
-                            <div class="summary-moon-chart-bar is-up" style="left: 90%; height: 32px;"></div>
-                        </div>
+                                {% for moon_hour in summary_moon['moon_hours'] %}
+                                <div class="summary-moon-chart-bar {% if moon_hour['elevation'] >= 0 %}is-up{% else %}is-down{% endif %}{% if moon_hour['rating'] == 'A' %} is-amber{% endif %}"
+                                     style="left: {{ moon_hour['left_pct'] }}%; height: {{ (moon_hour['height_pct'] * 100) }}%;"></div>
+                                {% endfor %}
+                            </div>
 
-                        <div class="summary-moon-chart-labels">
-                            <span>19</span>
-                            <span>20</span>
-                            <span>21</span>
-                            <span>22</span>
-                            <span>23</span>
-                            <span>24</span>
-                            <span>01</span>
+                            <div class="summary-moon-chart-labels">
+                                {% for moon_hour in summary_moon['moon_hours'] %}
+                                <span>{{ moon_hour['hour_label'] }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
+
+                    <img class="summary-moon-image" src="/static/moon/{{ summary_moon['moon_phase_image'] }}" alt="Moon phase">
                 </div>
             </div>
         </aside>
@@ -142,7 +147,7 @@
                     </div>
 
                     <div class="session-moon-block">
-                        <div class="session-moon-icon">🌙</div>
+                        <div class="session-moon-icon">{{ astroday.astro_moon }}</div>
                     </div>
 
                     <div class="session-hours">
@@ -246,6 +251,8 @@
         </div>
     </section>
 </div>
+
+
 <script>
 document.querySelectorAll('.session-main').forEach((button) => {
   button.addEventListener('click', () => {
