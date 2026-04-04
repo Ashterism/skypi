@@ -13,20 +13,19 @@ from ..config import DAYS, START_TIME, END_TIME, TIMEZONE
 """
 python -m skypi.services.forecaster
 
-This file calls the Moon and Weather data providers, and merges the output
-into a single "forecast hour" object.
+This file calls the weather and moon providers and merges their output
+into hourly forecast objects.
 
-It adds an astro viewing session "date" to allow logical grouping e.g., 1am 
-in with the previous night.
+It also adds an astro session date so post-midnight hours, like 1am,
+get grouped in with the previous night.
 
-None "astro session" hours are excluded from the forecast.
-
+Hours outside the astro session window are excluded from the forecast.
 """
 
 start_hour = int(START_TIME.split(":")[0])
 end_hour = int(END_TIME.split(":")[0])
 
-# create start and end datetimes to use with providers
+# build the datetime range used when fetching provider data
 def create_datetime(days):
     start_date = datetime.now(ZoneInfo(TIMEZONE)).date()
 
@@ -38,7 +37,7 @@ def create_datetime(days):
         tzinfo=ZoneInfo(TIMEZONE)
     )
 
-    end_date = start_date + timedelta(days=days) # reminder - day ends at 1am
+    end_date = start_date + timedelta(days=days)  # lookahead end date; end_dt uses the astro session end hour
 
     end_dt = datetime(
         end_date.year,
@@ -52,7 +51,7 @@ def create_datetime(days):
 
 
 def astro_date(dt):
-# check if hour is in "astro period" and assign viewing session date (or none)
+# check if this hour sits in the astro session window and assign its session date (or None)
     t = dt.hour
 
     if start_hour <= end_hour:
@@ -70,7 +69,7 @@ def astro_date(dt):
         
 
 
-# fetch data from providers and validate matches
+# fetch provider data and make sure the hourly timestamps line up
 def fetch_forecast_data(days: int = DAYS):
 
     start_dt, end_dt = create_datetime(days)
@@ -86,14 +85,14 @@ def fetch_forecast_data(days: int = DAYS):
     return(all_w_hours, all_m_hours)
 
 
-# create hourly object (classes) from hours
+# build HourlyForecast objects from the matched weather and moon hours
 def create_forecast(all_w_hours, all_m_hours):
     forecast_hour_data = []
 
     for i in range(len(all_w_hours)):
         session_date = astro_date(all_w_hours[i].time)
 
-        # skips hours not in astro_range
+        # skip hours outside the astro session window
         if session_date is None:
             continue
 
@@ -117,13 +116,13 @@ def create_forecast(all_w_hours, all_m_hours):
 
 
 def get_forecast():
-    # fetch weather / moon forecasts
+    # fetch raw weather and moon forecast data
     all_w_hours, all_m_hours = fetch_forecast_data()
-    # create hourly forecast objects
+    # merge them into hourly forecast objects
     raw_forecast_hours = create_forecast(all_w_hours, all_m_hours)
-    # add ratings to the hours
+    # add ratings to each hour
     rated_forecast_hours = get_evaluations(raw_forecast_hours)
-    # return complete hourly forecasts
+    # return the finished hourly forecast list
     return rated_forecast_hours
 
 

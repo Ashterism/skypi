@@ -12,10 +12,13 @@ from ..config import START_TIME, END_TIME
 
 # add milkyway position
 # potentially later DSO/Constellation location
+# This file shapes the daily UI summary data from the astro session data.
+# It does not fetch raw provider data itself.
 
 
+# Build the simple summary ranges shown in the "Tonight at a glance" block.
 def tonight_at_a_glance(hourly_forecast):
-    # work out ranges to display
+    # collect the values we want to turn into simple display ranges
     all_cloud = []
     all_wind = []
     all_visibility = []
@@ -42,6 +45,7 @@ def tonight_at_a_glance(hourly_forecast):
         rain_range = f"{min(all_rain)} - {max(all_rain)}%"
 
 
+    # moon summary just uses the first and last astro hours for the display line
     moon_phase = get_moon_phase(hourly_forecast[0].moon_phase)
     moon_start_alt = hourly_forecast[0].moon_elevation
     moon_end_alt = hourly_forecast[-1].moon_elevation
@@ -51,7 +55,7 @@ def tonight_at_a_glance(hourly_forecast):
 
     moon_range = f"{moon_phase} {moon_start} - {moon_end}"
 
-    # package up to return
+    # package up the summary values for the template
     return {
         "cloud_range": cloud_range,
         "wind_range": wind_range,
@@ -62,6 +66,8 @@ def tonight_at_a_glance(hourly_forecast):
     }
 
 
+# Small helper for best-window averages.
+# Not currently used in the main report, but keeping it here for now.
 def calc_best_window_avgs(best_hours,rating):
     cloud_vals = []
     visibility_vals = []
@@ -88,6 +94,8 @@ def calc_best_window_avgs(best_hours,rating):
     return best_avgs
 
 
+# Build the moon-specific summary data for the right-hand summary block.
+# This includes the phase image and the tiny elevation chart data.
 def summary_moon_data(todays_astro_hours):
     moon_hours = []
     moon_phase = todays_astro_hours[0].moon_phase
@@ -97,7 +105,7 @@ def summary_moon_data(todays_astro_hours):
     for i, hr in enumerate(todays_astro_hours):
         hr_el = hr.moon_elevation
 
-        # rating
+        # simple UI rating for the chart bar colour
         if hr_el >= 5:
             rating = "R"
         elif -18 <= hr_el < 5:
@@ -105,14 +113,14 @@ def summary_moon_data(todays_astro_hours):
         else:
             rating = "G"
 
-        # label
+        # hour label used under the chart
         hour_label = hr.time.strftime("%H")
 
-        # position (simple spacing)
+        # fixed left positions across the mini chart
         left_positions = [5, 20, 35, 50, 65, 80, 95]
         left_pct = left_positions[i]
 
-        # height scaling
+        # normalise elevation to a 0-1 chart height
         height_pct = abs(hr_el) / 90
 
         moon_hour = {
@@ -133,26 +141,25 @@ def summary_moon_data(todays_astro_hours):
 
 
 
+# Main entry point for the homepage data.
+# Pulls together the top-level blocks the template needs.
 def get_daily_report():
-    # get forecast data grouped by astro session
+    # get the forecast already grouped into astro nights
     astro_session_data = get_astro_sessions()
     
-    # extract day 0 (todays) overall rating
+    # overall result for tonight
     go_no_go = astro_session_data[0].astro_rating
 
-    # use day 0 data to return todays "at a glance"
+    # simple weather summary for tonight
     at_a_glance = tonight_at_a_glance(astro_session_data[0].astro_hours)
 
-    # get moon summary info
+    # moon summary block data
     summary_moon = summary_moon_data(astro_session_data[0].astro_hours)
 
-    # get next good session
+    # top summary line for the next usable / best window
     next_good_night = get_next_good_astro(astro_session_data)
 
-    # unpack astro_sessions and extract all hourly forecasts
-    hourly_breakdown = []
-    for session in astro_session_data:
-        hourly_breakdown.extend(session.astro_hours)
+    # keep the full astro session list for the lookahead rows
 
 
     return {
@@ -165,8 +172,6 @@ def get_daily_report():
 
 
 if __name__ == "__main__":
-    """
-    python -m skypi.services.daily_report
-    """
+    # quick local check
     report = get_daily_report()
     print(report)

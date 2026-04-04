@@ -119,15 +119,4 @@ if __name__ == "__main__":
             f"moon={hour.moon_rating}"
         )
 
-        
-
-"""
-	•	Overall: GREEN / AMBER / RED
-	•	Best window: 21:00-23:00
-	•	1-line reasons (max 2-3), e.g.:
-
-	•	“Cloud max 0%”
-	•	“Wind max 9 km/h”
-	•	“Dew spread min 8.8°C”
     
-    """
